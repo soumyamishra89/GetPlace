@@ -2,13 +2,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDh9Z6i4XAo_truUafZzfYKBLU60W54it8&libraries=places"></script>
-<title>Insert title here</title>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDh9Z6i4XAo_truUafZzfYKBLU60W54it8&callback=initMap&libraries=visualization,places" async defer></script>
+<title>Hopz</title>
+<style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+ </style>
 </head>
 <body>
 <div id="demo"><h2>Let AJAX change this text</h2></div>
 <div id="map"></div>
-<button type="button" onclick="loadDoc()">Get Stops</button>
+<!--button type="button" onclick="loadDoc()">Get Stops</button-->
 
 <script src="js/latlonginfo.js">
 	
