@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div id="demo"><h2>Let AJAX change this text</h2></div>
+<button type="button" onclick="loadDoc()">Get Stops</button>
+
+<script>
+	function loadDoc() {
+		var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (xhttp.readyState == 4 && xhttp.status == 200) {
+		     document.getElementById("demo").innerHTML = xhttp.responseText;
+		    }
+		  };
+		  xhttp.open("GET", "api.sl.se/api2/nearbystops/Json?key=509ecd92161d475fa8db07d3eed30e26&originCoordLat=59.293611&originCoordLong=18.083056&maxresults=1000&radius=2000", true);
+		  xhttp.send();
+	}
+</script>
+</body>
+</html>
