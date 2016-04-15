@@ -1,60 +1,109 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
 
-<!-- JQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<!-- JQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
-<!-- Bootstrap - Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<!-- Bootstrap - Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-<!-- Bootstrap - Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<!-- Bootstrap - Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-<!-- CSS -->
-<link rel="stylesheet", href="css/styles.css">
+	<!-- CSS -->
+	<link rel="stylesheet", href="css/styles.css">
 
-<title>Hopz</title>
-<style>
+	<title>Hopz</title>
+	<style>
 
-</style>
+	</style>
 </head>
 <body>
 
-<!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="mainNav">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#/home">HOPZ</a>
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="index.html">Home</a>
-                </li>
-                <li>
-                    <a href="about.html">About</a>
-                </li>
-                <li>
-                    <a href="contact.html">Contact</a>
-                </li>
-            </ul>
+	<!-- Navigation -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="mainNav">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#/home">HOPZ</a>
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="index.html">Home</a>
+					</li>
+					<li>
+						<a href="about.html">About</a>
+					</li>
+					<li>
+						<a href="contact.html">Contact</a>
+					</li>
+				</ul>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="login.html">Login</a>
+					</li>
+					<li>
+						<a href="register.html">Register</a>
+					</li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container --> 
+	</nav>
+
+
+	<!-- Content -->
+    <div class="item active">
+      <img src="images/rooftop.jpg" style="width:100%" class="img-responsive">
+      <div class="container">
+        <div class="carousel-caption" style="padding-bottom: 10%">
+        	<div class="searchBox">
+        		<div class="row">
+        			<div class="col-md-3">
+        				<h4>Buy</h4>
+        			</div>
+        			<div class="col-md-3">
+        				<h4>Rent</h4>
+        			</div>
+        		</div>
+        		<div class="row">
+        			<div class="col-md-12">
+	        			<form class="form-inline">
+				            <div class="form-group">
+				                <input type="text" class="form-control" placeholder="Enter City, Zip code, or Neighborhood" style="width:600px;">
+				            </div>
+				          </form> 
+        			</div>
+        		</div>
+        		<div class="row">
+        			<div class="col-md-4">
+        			</div>
+        			<div class="col-md-4">
+        			</div>
+        			<div class="col-md-4">
+        			</div>
+        		</div>
+
+        	</div>
         </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="login.html">Login</a>
-                </li>
-                <li>
-                    <a href="register.html">Register</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
+      </div>
     </div>
-    <!-- /.container --> 
-</nav>
+
+	<!-- footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="copyright text-muted small" style="margin-top:10px;">Copyright &copy; HOPZ 2016. All Rights Reserved.</p>
+                </div>  
+            </div>
+        </div>
+    </footer>
 
 </script>
 </body>
