@@ -11,17 +11,15 @@ var request = { radius: '500',
  * Loads the heatmap as per the points of interest specified by the user
  */
 function loadHeatMap() {
-    heatmapData = new google.maps.MVCArray();
-    heatmap = new google.maps.visualization.HeatmapLayer({
-        data: heatmapData,
-        map: map
-    });
+    
+    request['location'] = map.getCenter();
 	var xhttp = new XMLHttpRequest();
 	var nearbyStopsURL = [];
 	if(placesToSearch.indexOf('transport')!=-1) {
 		nearbyStopsURL.push("https://api.resrobot.se/location.nearbystops?key=0eab2bb0-a7dc-420e-9385-eda6641ad913");
 		nearbyStopsURL.push("&format=json&maxNo=1000");
-		nearbyStopsURL.push("&originCoordLat=59.329630&originCoordLong=18.059338");
+		
+		nearbyStopsURL.push("&originCoordLat="+ map.getCenter().lat()+"&originCoordLong="+map.getCenter().lng());
 		nearbyStopsURL.push("&r=500")
 		//  xhttp.open("GET", "http://api.sl.se/api2/nearbystops/Json?key=509ecd92161d475fa8db07d3eed30e26&originCoordLat=59.293611&originCoordLong=18.083056&maxresults=1000&radius=2000", true);
 		xhttp.open("GET", nearbyStopsURL.join(""), true)  
@@ -77,14 +75,19 @@ function loadHeatMap() {
 function initMap() {
 	loc = new google.maps.LatLng(59.333344, 18.056963999999994);
 	// adding location of search for request to place search
-	request['location'] = loc;
+	
 	map = new google.maps.Map(document.getElementById('map'), {
     zoom: 13,
     center: loc,
     mapTypeId: google.maps.MapTypeId.MAP
   });
-	
-	loadHeatMap();
+	// once a map has been created, a searchbox to search for places is attached to it. check googlesearch.js
+	addSearchBox();
+	// initialise a heatmap with only map. The data would be loaded once a place has been searched
+    heatmap = new google.maps.visualization.HeatmapLayer({
+        map: map
+    });
+    
 }
 	
     /*function getPoints() {
