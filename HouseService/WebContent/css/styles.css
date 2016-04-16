@@ -16,9 +16,23 @@ footer {
 	width: 100%;
 }
 
-.searchBox {
+.searchForm {
 	height: 300px;
 	width: 800px;
 	background-color: rgba(49, 49, 49, 0.72);
-	padding: 20px;
+	padding: 50px;
+}
+
+.searchBox {
+	padding: 10px;
+}
+
+.inputBox {
+	width: 200px;
+	padding: 10px
+}
+
+.button {
+	background-color: rgba(167, 202, 70, 1);
+	width: 200px;
 }
