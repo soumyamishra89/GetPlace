@@ -48,9 +48,16 @@ footer {
 .searchLine {
 	padding-top: 15px;
 	padding-bottom: 15px;
-	padding-left: 80px;
+	padding-left: 50px;
 	margin-top: -20px;
 	background-color: rgba(155, 155, 155, 1);
+}
+
+.selectLine {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 50px;
+	background-color: rgba(224, 224, 224, 1);
 }
 
 .form-group{
