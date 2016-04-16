@@ -16,6 +16,10 @@ footer {
 	width: 100%;
 }
 
+.navbar {
+    border-radius: 0px;
+}
+
 .searchForm {
 	height: 300px;
 	width: 800px;
@@ -32,7 +36,23 @@ footer {
 	padding: 10px
 }
 
-.button {
+.searchButton1 {
 	background-color: rgba(167, 202, 70, 1);
 	width: 200px;
+}
+
+.searchButton2 {
+	background-color: rgba(167, 202, 70, 1);
+}
+
+.searchLine {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 80px;
+	margin-top: -20px;
+	background-color: rgba(155, 155, 155, 1);
+}
+
+.form-group{
+	padding-left: 10px;
 }
