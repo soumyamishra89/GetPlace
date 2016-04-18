@@ -21,7 +21,7 @@ footer {
 }
 
 .searchForm {
-	height: 300px;
+	height: 250px;
 	width: 800px;
 	background-color: rgba(49, 49, 49, 0.72);
 	padding: 50px;
@@ -46,16 +46,16 @@ footer {
 }
 
 .searchLine {
-	padding-top: 15px;
-	padding-bottom: 15px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	padding-left: 50px;
 	margin-top: -20px;
 	background-color: rgba(155, 155, 155, 1);
 }
 
 .selectLine {
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 	padding-left: 50px;
 	background-color: rgba(224, 224, 224, 1);
 }

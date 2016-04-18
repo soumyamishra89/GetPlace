@@ -24,7 +24,7 @@
 	<link rel="stylesheet", href="css/styles.css">
 	<link rel="stylesheet", href="css/googlesearch.css">
 
-	<title>Hopz</title>
+	<title>inSiteMap</title>
 	<style>
 
 	</style>
@@ -36,16 +36,13 @@
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#/home">HOPZ</a>
+				<a class="navbar-brand" href="index.html">inSiteMap</a>
 				<ul class="nav navbar-nav">
 					<li>
 						<a href="index.html">Home</a>
 					</li>
 					<li>
-						<a href="about.html">About</a>
-					</li>
-					<li>
-						<a href="contact.html">Contact</a>
+						<a href="aboutus.html">About Us</a>
 					</li>
 				</ul>
 			</div>
@@ -53,10 +50,10 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<a href="login.html">Login</a>
+						<a href="#">Login</a>
 					</li>
 					<li>
-						<a href="register.html">Register</a>
+						<a href="#">Register</a>
 					</li>
 				</ul>
 			</div>
@@ -103,16 +100,13 @@
 					<option>Distance 4</option>
 				</select>
 			</div>
-			<div class="form-group">
-				<button type="button" id="googlesearchButton" class="btn searchButton2" onclick="searchMap()" disabled="disabled">Search</button>
-			</div>
 		</form>
 	</div>
 
 	<div class="selectLine">
 		<form class="form-inline">
 			<div class="form-group">
-				Places of Interest:
+				<label>Places of Interest:</label>
 			</div>
 			<div class="form-group">
 				<label class="checkbox-inline">
@@ -140,11 +134,26 @@
 					<input type="checkbox" name="placeOfInterest" id="alcoholShop" value="alcoholShop" onchange="addSearchCriteria()">Alcohol Shop
 				</label>
 			</div>
+
+			<div class="form-group">
+				<button type="button" id="googlesearchButton" class="btn searchButton2" onclick="searchMap()" disabled="disabled">Search</button>
+			</div>
 		</form>
 	</div>
 
 	<input id="locationSearch" class="controls" type="text" placeholder="Search Location" oninput="enabledisableSearch()"> 
 	<div id="map"></div>
 	<!--button type="button" onclick="loadDoc()">Get Stops</button-->
+
+		<!-- footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<p class="copyright text-muted small" style="margin-top:10px;">Copyright &copy; inSiteMap 2016. All Rights Reserved.</p>
+				</div>  
+			</div>
+		</div>
+	</footer>
 </body>
 </html>
