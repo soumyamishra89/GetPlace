@@ -73,9 +73,9 @@
 					<option>Rent</option>
 				</select>
 			</div>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<input type="text" class="form-control" id="location" placeholder="Enter Location">
-			</div>
+			</div> -->
 			<div class="form-group">
 				<select class="form-control">
 					<option>- Room Type -</option>
@@ -104,7 +104,7 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<button type="button" class="btn searchButton2">Search</button>
+				<button type="button" id="googlesearchButton" class="btn searchButton2" onclick="searchMap()" disabled="disabled">Search</button>
 			</div>
 		</form>
 	</div>
@@ -116,34 +116,34 @@
 			</div>
 			<div class="form-group">
 				<label class="checkbox-inline">
-					<input type="checkbox" name="placeOfInterest" id="publicTransport" value="publicTransport">Public Transport
+					<input type="checkbox" name="placeOfInterest" id="publicTransport" value="publicTransport" onchange="addSearchCriteria()">Public Transport
 				</label>
 			</div>
 			<div class="form-group">
 				<label class="checkbox-inline">
-					<input type="checkbox" name="placeOfInterest" id="resturant" value="resturant">Resturant
+					<input type="checkbox" name="placeOfInterest" id="resturant" value="restaurant" onchange="addSearchCriteria()">Restaurant
 				</label>
 			</div>
 			<div class="form-group">
 				<label class="checkbox-inline">
-					<input type="checkbox" name="placeOfInterest" id="groceryStore" value="groceryStore">Grocery Store
+					<input type="checkbox" name="placeOfInterest" id="groceryStore" value="grocery_or_supermarket" onchange="addSearchCriteria()">Grocery Store
 				</label>
 			</div>
 			<div class="form-group">
 				<label class="checkbox-inline">
-					<input type="checkbox" name="placeOfInterest" id="shoppingMall" value="shoppingMall">Shopping Mall
+					<input type="checkbox" name="placeOfInterest" id="shoppingMall" value="shopping_mall" onchange="addSearchCriteria()">Shopping Mall
 				</label>
 			</div>
 
 			<div class="form-group">
 				<label class="checkbox-inline">
-					<input type="checkbox" name="placeOfInterest" id="alcoholShop" value="alcoholShop">Alcohol Shop
+					<input type="checkbox" name="placeOfInterest" id="alcoholShop" value="alcoholShop" onchange="addSearchCriteria()">Alcohol Shop
 				</label>
 			</div>
 		</form>
 	</div>
 
-	<input id="pac-input" class="controls" type="text" placeholder="Search Location">
+	<input id="locationSearch" class="controls" type="text" placeholder="Search Location" oninput="enabledisableSearch()"> 
 	<div id="map"></div>
 	<!--button type="button" onclick="loadDoc()">Get Stops</button-->
 </body>
