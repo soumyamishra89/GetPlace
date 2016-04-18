@@ -42,13 +42,14 @@ function loadHeatMap() {
 			case 'publicTransport' :
 					var xhttp = new XMLHttpRequest();
 					var nearbyStopsURL = [];
-					nearbyStopsURL.push("https://api.resrobot.se/location.nearbystops?key=0eab2bb0-a7dc-420e-9385-eda6641ad913");
+					nearbyStopsURL.push("https://crossorigin.me/https://api.resrobot.se/location.nearbystops?key=0eab2bb0-a7dc-420e-9385-eda6641ad913");
 					nearbyStopsURL.push("&format=json&maxNo=1000");
 					
 					nearbyStopsURL.push("&originCoordLat="+ map.getCenter().lat()+"&originCoordLong="+map.getCenter().lng());
 					nearbyStopsURL.push("&r="+radius)
 					//  xhttp.open("GET", "http://api.sl.se/api2/nearbystops/Json?key=509ecd92161d475fa8db07d3eed30e26&originCoordLat=59.293611&originCoordLong=18.083056&maxresults=1000&radius=2000", true);
-					xhttp.open("GET", nearbyStopsURL.join(""), true)  
+					xhttp.open("GET", nearbyStopsURL.join(""), true);
+					//xhttp.setRequestHeader("Access-Control-Allow-Origin", "https://api.resrobot.se/location.nearbystops")
 					xhttp.send();
 					  
 					xhttp.onreadystatechange = function() {
@@ -57,11 +58,12 @@ function loadHeatMap() {
 					   	if(response.indexOf("error")==-1) {
 					   		var stopsInfo = JSON.parse(response);
 					   		var weight = placesToSearch.length-placesToSearch.indexOf('publicTransport');
-					   		
-					   		for(var i=0, stopLoc;stopLoc=stopsInfo.StopLocation[i];i++){
-					   			heatmapData.push({location: new google.maps.LatLng(stopLoc.lat, stopLoc.lon), weight:weight});	
-					   		}
-					    }
+					   		if(stopsInfo && stopsInfo.StopLocation) {
+						   		for(var i=0, stopLoc;stopLoc=stopsInfo.StopLocation[i];i++) {
+						   			heatmapData.push({location: new google.maps.LatLng(stopLoc.lat, stopLoc.lon), weight:weight});	
+						   		}
+						    }
+					   	}
 					    	//document.getElementById("demo").innerHTML = heatmapData;
 					  }
 			

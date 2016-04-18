@@ -18,8 +18,9 @@ function addSearchBox() {
 
 	// if a search place has been provided then it will be added to search box in this page
 	if(window.location.search!=="") {
-		console.log(window.location.search.split("=")[1]);
-		locationsearchBox.value=window.location.search.split("=")[1];
+		decodeURI(window.location.href).replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value){
+			locationsearchBox.value=value;
+		});
 		locationsearchBox.oninput();
 	}
   // Bias the SearchBox results towards current map's viewport.
@@ -32,7 +33,6 @@ function addSearchBox() {
   // more details for that place.
   searchBox.addListener('places_changed', function() {
 	  var places = searchBox.getPlaces();
-
 	    if (places.length == 0) {
 	      return;
 	    }

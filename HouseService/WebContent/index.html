@@ -12,8 +12,11 @@
 	<!-- Bootstrap - Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
+	<!-- JS -->
+	<script src="js/attachGoogleServices.js"></script>
+	
 	<!-- Google Map -->
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDh9Z6i4XAo_truUafZzfYKBLU60W54it8&libraries=places" async defer></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDh9Z6i4XAo_truUafZzfYKBLU60W54it8&callback=attachGoogleSearch&libraries=places" async defer></script>
 
 	<!-- CSS -->
 	<link rel="stylesheet", href="css/styles.css">
@@ -133,21 +136,6 @@
 
     <!-- /.container --> 
 </nav>
-<script>
-	var input = document.getElementById('googlesearch');
-	var googleSearchBox = new google.maps.places.SearchBox(input);
-	var searchButton = document.getElementById('searchButton');
-	searchButton.addEventListener("click", function() {
-		window.location.assign("search_result.html?searchplace="+input.value);
-	});
-	
-	function enabledisablesearch(){
-		if(this.input.value==="") {
-			searchButton.disabled = true;
-		} else {
-			searchButton.disabled = false;
-		}
-	}
-</script>
+
 </body>
 </html>
