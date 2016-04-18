@@ -63,3 +63,29 @@ footer {
 .form-group{
 	padding-left: 10px;
 }
+
+/* About Page */
+
+.business-header {
+    height: 400px;
+    background: url('../images/rooftop.jpg') center center no-repeat scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+   	margin-top: 50px;
+}
+
+.tagline {
+    text-shadow: 0 0 10px #000;
+    color: #fff;
+}
+
+.img-center {
+	margin: 0 auto;
+}
+
+a:link    {color:rgba(167, 202, 70, 1); background-color:transparent; text-decoration:none}
+a:visited {color:rgba(167, 202, 70, 1); background-color:transparent; text-decoration:none}
+a:hover   {color:rgba(167, 202, 70, 1); background-color:transparent; text-decoration:none}
+a:active  {color:rgba(167, 202, 70, 1); background-color:transparent; text-decoration:none}
