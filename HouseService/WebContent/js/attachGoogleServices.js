@@ -6,7 +6,7 @@ function attachGoogleSearch() {
 	var googleSearchBox = new google.maps.places.SearchBox(input);
 	var searchButton = document.getElementById('searchButton');
 	searchButton.addEventListener("click", function() {
-		window.location.assign("search_result.html?searchplace="+input.value);
+		window.location.assign("explore.html?searchplace="+input.value);
 	});
 }
 
