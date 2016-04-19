@@ -29,34 +29,35 @@
 <body>
 
 	<!-- Navigation -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="mainNav">
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
 				<a class="navbar-brand" href="index.html">InSiteMap</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li>
 						<a href="index.html">Home</a>
+					</li>
+					<li>
+						<a href="#">Services</a>
 					</li>
 					<li>
 						<a href="aboutus.html">About Us</a>
 					</li>
 				</ul>
 			</div>
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav navbar-right">
-<!-- 					<li>
-						<a href="#">Login</a>
-					</li>
-					<li>
-						<a href="#">Register</a>
-					</li> -->
-				</ul>
-			</div>
 			<!-- /.navbar-collapse -->
 		</div>
-		<!-- /.container --> 
+		<!-- /.container -->
 	</nav>
 
 
@@ -67,6 +68,11 @@
 			<div class="carousel-caption" style="padding-bottom: 15%;">
 				<div class="searchForm">
 					<div class="row">
+						<div class="col-md-12">
+							<h3> Explore Sites with Us</h3>
+						</div>
+					</div>
+<!-- 					<div class="row">
 						<div class="col-md-3"></div>
 						<div class="col-md-3">
 							<label class="radio-inline">
@@ -79,12 +85,12 @@
 							</label>
 						</div>
 						<div class="col-md-3"></div>
-					</div>
+					</div> -->
 					<div class="row searchBox">
 						<div class="col-md-12">
 							<form class="form-inline">
 								<div class="form-group">
-									<input id="googlesearch" type="text" class="form-control" oninput="enabledisablesearch()" placeholder="Enter City, Zip code, or Neighborhood" style="width:600px;">
+									<input id="googlesearch" type="text" class="form-control" oninput="enabledisablesearch()" placeholder="Enter location" style="width:600px;">
 								</div>
 							</form> 
 						</div>
@@ -116,7 +122,7 @@
 	</footer>
 
 
-    <!-- /.container --> 
+	<!-- /.container --> 
 </nav>
 
 </body>
