@@ -240,11 +240,14 @@ function addPublicTransportIcons() {
 	            });
 	        
 	        function transform(d) {
-	          d = projection.fromLatLngToDivPixel(d[0]);
-	          return d3.select(this)
-	              .style("left", (d.x - padding) + "px")
-	              .style("top", (d.y - padding) + "px");
-	        }
+	        	console.log("d: " + d);
+	        	console.log("d[0]: " + d[0]);
+
+	            d = projection.fromLatLngToDivPixel(d[0]);
+	                return d3.select(this)
+	                		.style("left", (d.x - padding) + "px")
+	                		.style("top", (d.y - padding) + "px");
+	        	}
 	      }
 	     
 	}
@@ -255,18 +258,12 @@ function markerClick(d) {
 	console.log(this);
 	console.log(d);
 	console.log("test");
-//	contentStringInitial +='</form>' +'<div class="input-group-btn" style="justify-content: center;align-items: center">'+
-//	'<button type="submit" class="btn btn-secondary" onclick="reload()">'+
-//	'<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'+
-//	'</button>'+
-//	'</div>'+'</div>';
-//	 
-	//var mapcenter = map.getCenter();
+	var contentStringInitial ='Related Information';
 	
-//	infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
-//		content: contentStringInitial,		// dom object
-//		position: mapcenter				// latLng object
-//	});
-//	infowindowinitial.open(map);
+	var infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
+		content: contentStringInitial,		// dom object
+		position: d[0]				// latLng object
+	});
 
+	infowindowinitial.open(map);
 }
