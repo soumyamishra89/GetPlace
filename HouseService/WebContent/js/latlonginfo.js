@@ -1,7 +1,7 @@
 /**
  * 
  */
-var map, heatmap, loc, heatmapData, radius = 500;
+var map, heatmap, loc, heatmapData, radius = 500, overlay, tableau=[];
 //var placesToSearch= ['publicTransport', 'grocery_or_supermarket', 'shopping_mall', 'restaurant'];
 var request = { radius: radius,
 		    rankby: 'prominence'
@@ -58,10 +58,13 @@ function loadHeatMap() {
 					   	if(response.indexOf("error")==-1) {
 					   		var stopsInfo = JSON.parse(response);
 					   		var weight = placesToSearch.length-placesToSearch.indexOf('publicTransport');
+					   		tableau=[];
 					   		if(stopsInfo && stopsInfo.StopLocation) {
 						   		for(var i=0, stopLoc;stopLoc=stopsInfo.StopLocation[i];i++) {
-						   			heatmapData.push({location: new google.maps.LatLng(stopLoc.lat, stopLoc.lon), weight:weight});	
+						   			//heatmapData.push({location: new google.maps.LatLng(stopLoc.lat, stopLoc.lon), weight:weight});
+						   			tableau.push([new google.maps.LatLng(stopLoc.lat, stopLoc.lon), stopLoc.products]);
 						   		}
+						   		addPublicTransportIcons();
 						    }
 					   	}
 					    	//document.getElementById("demo").innerHTML = heatmapData;
@@ -108,18 +111,25 @@ function loadHeatMap() {
 function initMap() {
 	loc = new google.maps.LatLng(59.333344, 18.056963999999994);
 	// adding location of search for request to place search
-	
+	   var styles = [
+	                 {
+	                     "featureType": "transit.station",
+	                     "stylers": [{ "visibility": "off" }]
+	                 }
+	                 ];
 	map = new google.maps.Map(document.getElementById('map'), {
     zoom: 13,
     center: loc,
     mapTypeId: google.maps.MapTypeId.MAP
   });
+	 map.setOptions({ styles: styles });
 	// once a map has been created, a searchbox to search for places is attached to it. check googlesearch.js
 	
 	// initialise a heatmap with only map. The data would be loaded once a place has been searched
     heatmap = new google.maps.visualization.HeatmapLayer({
         map: map
     });
+    overlay = new google.maps.OverlayView();
     addSearchBox();
 }
 	
@@ -159,4 +169,104 @@ function addPlaceToHeatMap(results, status, placeType) {
 //    	 pagination.nextPage();
 //     }    
   
+}
+
+function addPublicTransportIcons() {
+	if(overlay) {
+		overlay.setMap(null);
+		overlay = new google.maps.OverlayView();
+	}
+	overlay.onRemove = function() {
+		d3.selectAll("div.stations").remove();
+	}
+	
+	overlay.onAdd = function() {
+	      var layer = d3.select(this.getPanes().overlayMouseTarget).append("div")
+	          .attr("class", "stations")
+	         
+	      // Draw each marker as a separate SVG element.
+	      // We could use a single SVG, but what size would it have?
+	      overlay.draw = function() {
+	        var projection = this.getProjection(),
+	            padding = 10;
+	        var marker = layer.selectAll("svg")
+	            .data(tableau)
+	            .each(transform) // update existing markers
+	          .enter().append("svg")
+	            .each(transform)
+	            .attr("class", "marker")
+	            .attr("viewBox", "0 0 20 20")
+	            .attr("id",function(d){
+	              return d[1];
+	            }).on("click", markerClick);
+	            
+	        marker.append("svg:image")
+	            .attr("width", "100%")
+	            .attr("height", "100%")
+	            .attr("x", 0)
+	            .attr("y", 0)
+	            .attr("xlink:href",function(d){
+	            	var products = d[1];
+	            	if(products&1==1){
+	            		return "";
+	            	}
+	            	if((products&2)==2){
+	            		return "images/speed_train.jpg";
+	            	}
+	            	if((products&4)==4){
+	            		return "images/train.png";
+	            	}
+	            	if((products&8)==8){
+	            		return "images/rooftop.jpg";
+	            	}
+	            	if((products&16)==16){
+	            		return "images/train.png";
+	            	}
+	            	if((products&32)==32){
+	            		return "images/subway.png";
+	            	}
+	            	if((products&64)==64){
+	            		return "images/tram.png";
+	            	}
+	            	if((products&128)==128){
+	            		return "images/busstop.png";
+	            	}	
+	            	if((products&256)==256){
+	            		return "images/ferry.png";
+	            	}
+	            	if((products&512)==512){
+	            		return "images/taxi.png";
+	            	}
+	            });
+	        
+	        function transform(d) {
+	          d = projection.fromLatLngToDivPixel(d[0]);
+	          return d3.select(this)
+	              .style("left", (d.x - padding) + "px")
+	              .style("top", (d.y - padding) + "px");
+	        }
+	      }
+	     
+	}
+	overlay.setMap(map);
+}
+
+function markerClick(d) {
+	console.log(this);
+	console.log(d);
+	console.log("test");
+//	contentStringInitial +='</form>' +'<div class="input-group-btn" style="justify-content: center;align-items: center">'+
+//	'<button type="submit" class="btn btn-secondary" onclick="reload()">'+
+//	'<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'+
+//	'</button>'+
+//	'</div>'+'</div>';
+//	 
+	//var mapcenter = map.getCenter();
+	
+//	infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
+//		content: contentStringInitial,		// dom object
+//		position: mapcenter				// latLng object
+//	});
+//	infowindowinitial.open(map);
+
 }
