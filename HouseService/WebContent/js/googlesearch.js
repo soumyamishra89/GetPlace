@@ -28,7 +28,7 @@ function addSearchBox() {
 		searchBox.setBounds(map.getBounds());
 	});
 
-  //var markers = [];
+  var markers = [];
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
   searchBox.addListener('places_changed', function() {
@@ -38,10 +38,10 @@ function addSearchBox() {
 	    }
 
     // Clear out the old markers.
-   // markers.forEach(function(marker) {
-    //  marker.setMap(null);
-    //});
-    //markers = [];
+    markers.forEach(function(marker) {
+       marker.setMap(null);
+    });
+    markers = [];
 
     // For each place, get the icon, name and location.
     var bounds = new google.maps.LatLngBounds();
@@ -78,7 +78,9 @@ function addSearchBox() {
       marker.addListener('click', function() {
           infowindow.open(map, marker);
       });
-      
+
+      markers.push(marker);
+
 
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
