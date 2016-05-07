@@ -64,6 +64,22 @@ function addSearchBox() {
         position: place.geometry.location
       }));*/
 
+      // set inforwindow and marker
+      var infowindow = new google.maps.InfoWindow({
+        content: place.name
+      });
+
+      var marker = new google.maps.Marker({
+        position: place.geometry.location,
+        map: map,
+        title: place.name
+      });
+
+      marker.addListener('click', function() {
+          infowindow.open(map, marker);
+      });
+      
+
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(place.geometry.viewport);
