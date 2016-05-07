@@ -132,6 +132,14 @@ function initMap() {
     overlay = new google.maps.OverlayView();
     addSearchBox();
 }
+   function showTravelTimeMap(){
+	   var widget = new walkscore.TravelTimeWidget({
+	    	  map    : map,
+	    	  origin : '59.333344, 18.056963999999994',
+	    	  show   : true,
+	    	  mode   : walkscore.TravelTime.Mode.DRIVE
+	    	});
+   }
 	
     /*function getPoints() {
         return [
