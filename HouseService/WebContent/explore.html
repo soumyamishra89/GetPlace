@@ -168,19 +168,28 @@ input.minutes {
 		</form>
 	</div>
 
-	<input id="locationSearch" class="controls" type="text" placeholder="Search Location" oninput="enabledisableSearch()"> 
-	<div id="map"></div>
-	<!--button type="button" onclick="loadDoc()">Get Stops</button-->
+	<input id="locationSearch" class="controls" type="text" placeholder="Search Location" oninput="enabledisableSearch()">
+	
 
-		<!-- footer -->
-	<footer>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<p class="copyright text-muted small" style="margin-top:10px;">Copyright &copy; InSiteMap 2016. All Rights Reserved.</p>
-				</div>  
+
+	<div class="row">
+		<div class="col-md-9">
+			<div class="map_content">
+				<div id="map"></div>
 			</div>
 		</div>
-	</footer>
+		<div class="col-md-3">
+		</div>
+	</div> 
+
+	
+	<!--button type="button" onclick="loadDoc()">Get Stops</button-->
+
+	<!-- footer -->
+	<div class="row" style="background-color: #000;">
+		<div class="col-md-12">
+			<p class="copyright text-muted small" style="padding:10px;">Copyright &copy; InSiteMap 2016. All Rights Reserved.</p>
+		</div>  
+	</div>
 </body>
 </html>

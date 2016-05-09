@@ -6,6 +6,12 @@ html, body {
 
 #map {
 	height: 100%;
+	position: absolute;
+	background-color: #CCC;
+}
+
+.map_content {
+	height: 600px;
 }
 
 footer {
