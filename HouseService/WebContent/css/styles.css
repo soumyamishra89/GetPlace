@@ -6,6 +6,17 @@ html, body {
 
 #map {
 	height: 100%;
+	position: absolute;
+	background-color: #CCC;
+}
+
+.mapContent {
+	height: 600px;
+}
+
+.locationContent {
+	margin-top: -20px;
+	padding: 20px;
 }
 
 footer {
@@ -74,6 +85,12 @@ footer {
 
 .form-group{
 	padding-left: 10px;
+}
+
+#locationSearch {
+	height: 30px;
+	width: 250px;
+	font-size: 14px;
 }
 
 /* About Page */

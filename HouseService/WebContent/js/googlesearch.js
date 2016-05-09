@@ -20,6 +20,7 @@ function addSearchBox() {
 	if(window.location.search!=="") {
 		decodeURI(window.location.href).replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value){
 			locationsearchBox.value=value;
+      document.getElementById('locationTitle').innerHTML = value;
 		});
 		locationsearchBox.oninput();
 	}
@@ -47,6 +48,10 @@ function addSearchBox() {
     var bounds = new google.maps.LatLngBounds();
     
     places.forEach(function(place) {
+
+        // change the location title in the right side bar
+        document.getElementById('locationTitle').innerHTML = place.name;
+
         var icon = {
           url: place.icon,
           size: new google.maps.Size(71, 71),
