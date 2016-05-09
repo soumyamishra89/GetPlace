@@ -62,7 +62,7 @@ function loadHeatMap() {
 					   		if(stopsInfo && stopsInfo.StopLocation) {
 						   		for(var i=0, stopLoc;stopLoc=stopsInfo.StopLocation[i];i++) {
 						   			//heatmapData.push({location: new google.maps.LatLng(stopLoc.lat, stopLoc.lon), weight:weight});
-						   			tableau.push([new google.maps.LatLng(stopLoc.lat, stopLoc.lon), stopLoc.products]);
+						   			tableau.push([new google.maps.LatLng(stopLoc.lat, stopLoc.lon), stopLoc.products, stopLoc.name]);
 						   		}
 						   		addPublicTransportIcons();
 						    }
@@ -77,16 +77,16 @@ function loadHeatMap() {
 					request['type']='grocery_or_supermarket'
 						
 				  	service = new google.maps.places.PlacesService(map);
-				  	service.radarSearch(request, function (results, status) {
-				  		addPlaceToHeatMap(results, status, 'grocery_or_supermarket');
+				  	service.nearbySearch(request, function (results, status, pagination) {
+				  		addPlaceToHeatMap(results, status, pagination, 'grocery_or_supermarket');
 				  	});
 				  	break;
 			case 'shopping_mall' :
 					request['type']='shopping_mall'
 						
 				  	service = new google.maps.places.PlacesService(map);
-				  	service.radarSearch(request, function (results, status) {
-				  		addPlaceToHeatMap(results, status, 'shopping_mall');
+				  	service.nearbySearch(request, function (results, status, pagination) {
+				  		addPlaceToHeatMap(results, status, pagination, 'shopping_mall');
 				  	});	
 				  	break;
 		
@@ -94,8 +94,8 @@ function loadHeatMap() {
 					request['type']='restaurant'
 				  	
 				  	service = new google.maps.places.PlacesService(map);
-				  	service.radarSearch(request, function (results, status) {
-				  		addPlaceToHeatMap(results, status, 'restaurant');
+				  	service.nearbySearch(request, function (results, status, pagination) {
+				  		addPlaceToHeatMap(results, status, pagination, 'restaurant');
 				  	});
 				  	break;
 		}
@@ -132,34 +132,39 @@ function initMap() {
     overlay = new google.maps.OverlayView();
     addSearchBox();
 }
-   function showTravelTimeMap(){
-	   var timeMinutes = document.getElementById("traveltime").value;
-	   var originPoint = map.getCenter().lat()+','+ map.getCenter().lng();
-	   var widget = new walkscore.TravelTimeWidget({
-	    	  map    : map,
-	    	  origin : originPoint,
-	    	  show   : true,
-	    	  mode   : walkscore.TravelTime.Mode.DRIVE,
-	    	  time : timeMinutes
-	    	});
-   }
 
-function addPlaceToHeatMap(results, status, placeType) {
-	  if (status == google.maps.places.PlacesServiceStatus.OK) {
-  		  var weight = placesToSearch.length - placesToSearch.indexOf(placeType);
-  		  
-  		  for (var i = 0; i < results.length; i++) {
-  			  var place = results[i];
-  	      /* place.geometry.location,place.name, place.types */
-  	      //console.log(place.types.contains("restaurant"));
-  			  heatmapData.push({location: place.geometry.location, weight:weight});
-  			//heatmapData.push(place.geometry.location);
-  		  }
-  	  }
+/**
+ * adds the traveltime widget to the google map
+ */
+function showTravelTimeMap(){
+   var timeMinutes = document.getElementById("traveltime").value;
+   var originPoint = map.getCenter().lat()+','+ map.getCenter().lng();
+   var widget = new walkscore.TravelTimeWidget({
+    	  map    : map,
+    	  origin : originPoint,
+    	  show   : true,
+    	  mode   : walkscore.TravelTime.Mode.DRIVE,
+    	  time : timeMinutes
+    	});
+  }
+
+function addPlaceToHeatMap(results, status, pagination, placeType) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+	  var weight = placesToSearch.length - placesToSearch.indexOf(placeType);
+	  
+	  for (var i = 0; i < results.length; i++) {
+		  var place = results[i];
+		  console.log(place);
+      /* place.geometry.location,place.name, place.types */
+      //console.log(place.types.contains("restaurant"));
+		  heatmapData.push({location: place.geometry.location, weight:weight});
+		//heatmapData.push(place.geometry.location);
+	  }
+  }
   	
-    
-//    if(pagination.hasNextPage){
-//    	 pagination.nextPage();
+    if(pagination.hasNextPage) {
+    	pagination.nextPage();
+    }
 //     }    
   
 }
@@ -200,35 +205,53 @@ function addPublicTransportIcons() {
 	            .attr("y", 0)
 	            .attr("xlink:href",function(d){
 	            	var products = d[1];
-	            	if(products&1==1){
-	            		return "";
+	            	var transportCount = 0;
+	            	if(products&1==1) {
+	            		transportCount++;
 	            	}
-	            	if((products&2)==2){
-	            		return "images/speed_train.jpg";
+	            	if((products&2)==2) {
+	            		transportCount++;
 	            	}
-	            	if((products&4)==4){
-	            		return "images/train.png";
+	            	if((products&4)==4) {
+	            		transportCount++;
 	            	}
-	            	if((products&8)==8){
-	            		return "images/rooftop.jpg";
+	            	if((products&8)==8) {
+	            		transportCount++;
 	            	}
-	            	if((products&16)==16){
-	            		return "images/train.png";
+	            	if((products&16)==16) {
+	            		transportCount++;
 	            	}
-	            	if((products&32)==32){
-	            		return "images/subway.png";
+	            	if((products&32)==32) {
+	            		transportCount++;
 	            	}
-	            	if((products&64)==64){
-	            		return "images/tram.png";
+	            	if((products&64)==64) {
+	            		transportCount++;
 	            	}
-	            	if((products&128)==128){
-	            		return "images/busstop.png";
+	            	if((products&128)==128) {
+	            		transportCount++;
 	            	}	
-	            	if((products&256)==256){
-	            		return "images/ferry.png";
+	            	if((products&256)==256) {
+	            		transportCount++;
 	            	}
-	            	if((products&512)==512){
-	            		return "images/taxi.png";
+	            	if((products&512)==512) {
+	            		transportCount++;
+	            	}
+	            	
+	            	if(transportCount>1) {
+	            		return "images/public_transport.png";
+	            	} else {
+	            		switch(products) {
+	            		case 1: return "images/flight.png";
+	            		case 2: return "images/speed_train.jpg";
+	            		case 4: return "images/train.png";
+	            		case 8: return "images/expressbus.png";
+	            		case 16: return "images/train.png";
+	            		case 32: return "images/subway.png";
+	            		case 64: return "images/tram.png";
+	            		case 128: return "images/busstop.png";
+	            		case 256: return "images/ferry.png";
+	            		case 512: return "images/taxi.png";
+	            		}
 	            	}
 	            });
 	        
@@ -245,17 +268,54 @@ function addPublicTransportIcons() {
 }
 
 function markerClick(d) {
-	console.log(this);
-	console.log(d);
-	console.log("test");
+	
 	var contentStringInitial ='Related Information';
 	if(infowindowinitial) {
 		infowindowinitial.close();
 	}
+	
+	var contentStringInitial = addTransportImageToInfoWindow(d, contentStringInitial);
+	
 	infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
 		content: contentStringInitial,		// dom object
 		position: d[0]				// latLng object
 	});
 
 	infowindowinitial.open(map);
+}
+
+function addTransportImageToInfoWindow(d, contentStringInitial) {
+	var products = d[1];
+	var contentStringInitial = '<div>'; 
+	if(products&1==1) {
+		contentStringInitial+='<img src="images/flight.png style="width:20px;height:20px;"/>';
+	}
+	if((products&2)==2) {
+		contentStringInitial+='<img src="images/speed_train.jpg" style="width:20px;height:20px;"/>';
+	}
+	if((products&4)==4) {
+		contentStringInitial+='<img src="images/train.png" style="width:20px;height:20px;"/>';
+	}
+	if((products&8)==8) {
+		contentStringInitial+='<img src="images/expressbus.png" style="width:20px;height:20px;"/>';
+	}
+	if((products&16)==16) {
+		contentStringInitial+='<img src="images/train.png" style="width:20px;height:20px;"/>';
+	}
+	if((products&32)==32) {
+		contentStringInitial+='<img src="images/subway.png" style="width:20px;height:20px;"/>';
+	}
+	if((products&64)==64) {
+		contentStringInitial+='<img src="images/tram.png" style="width:20px;height:20px;"/>';
+	}
+	if((products&128)==128) {
+		contentStringInitial+='<img src="images/busstop.png" style="width:20px;height:20px;"/>';
+	}	
+	if((products&256)==256) {
+		contentStringInitial+='<img src="images/ferry.png" style="width:20px;height:20px;"/>';
+	}
+	if((products&512)==512) {
+		contentStringInitial+='<img src="images/taxi.png" style="width:20px;height:20px;"/>';
+	}
+	return contentStringInitial+='</div><br><b>'+d[2].trim()+'</b>';
 }
