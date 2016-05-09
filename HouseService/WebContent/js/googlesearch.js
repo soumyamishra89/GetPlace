@@ -93,6 +93,8 @@ function addSearchBox() {
     map.setCenter(bounds.getCenter());
     heatmapData = new google.maps.MVCArray() ;
     heatmap.setData(heatmapData);
+    
+    showTravelTimeMap();
     loadHeatMap();
    // map.fitBounds(bounds);
     //map.setZoom(13);

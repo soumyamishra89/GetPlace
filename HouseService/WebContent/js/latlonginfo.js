@@ -1,7 +1,7 @@
 /**
  * 
  */
-var map, heatmap, loc, heatmapData, radius = 500, overlay, tableau=[];
+var map, heatmap, loc, heatmapData, radius = 500, overlay, tableau=[], infowindowinitial;
 //var placesToSearch= ['publicTransport', 'grocery_or_supermarket', 'shopping_mall', 'restaurant'];
 var request = { radius: radius,
 		    rankby: 'prominence'
@@ -42,7 +42,7 @@ function loadHeatMap() {
 			case 'publicTransport' :
 					var xhttp = new XMLHttpRequest();
 					var nearbyStopsURL = [];
-					nearbyStopsURL.push("https://crossorigin.me/https://api.resrobot.se/location.nearbystops?key=0eab2bb0-a7dc-420e-9385-eda6641ad913");
+					nearbyStopsURL.push("https://api.resrobot.se/location.nearbystops?key=0eab2bb0-a7dc-420e-9385-eda6641ad913");
 					nearbyStopsURL.push("&format=json&maxNo=1000");
 					
 					nearbyStopsURL.push("&originCoordLat="+ map.getCenter().lat()+"&originCoordLong="+map.getCenter().lng());
@@ -133,31 +133,16 @@ function initMap() {
     addSearchBox();
 }
    function showTravelTimeMap(){
+	   var timeMinutes = document.getElementById("traveltime").value;
+	   var originPoint = map.getCenter().lat()+','+ map.getCenter().lng();
 	   var widget = new walkscore.TravelTimeWidget({
 	    	  map    : map,
-	    	  origin : '59.333344, 18.056963999999994',
+	    	  origin : originPoint,
 	    	  show   : true,
-	    	  mode   : walkscore.TravelTime.Mode.DRIVE
+	    	  mode   : walkscore.TravelTime.Mode.DRIVE,
+	    	  time : timeMinutes
 	    	});
    }
-	
-    /*function getPoints() {
-        return [
-          new google.maps.LatLng(59.333344, 18.056963999999994),
-          new google.maps.LatLng(59.333192, 18.05431199999998),
-          new google.maps.LatLng(59.33, 18.05055500000003),
-          new google.maps.LatLng(59.332661, 18.066123999999945),
-          new google.maps.LatLng(59.330684, 18.06845199999998),
-          new google.maps.LatLng(59.329848, 18.068874999999935),
-          new google.maps.LatLng(59.332553, 18.068389000000025),
-          new google.maps.LatLng(59.325407, 18.066367000000014),
-          new google.maps.LatLng(59.326872, 18.068794000000025),
-          new google.maps.LatLng(59.324122, 18.06267200000002),
-          new google.maps.LatLng(59.324122, 18.06267200000002),
-          new google.maps.LatLng(59.332401, 18.048406),
-          new google.maps.LatLng(59.335529, 18.063535),
-          new google.maps.LatLng(59.335538, 18.055067000000008)];
-    }*/
 
 function addPlaceToHeatMap(results, status, placeType) {
 	  if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -248,9 +233,6 @@ function addPublicTransportIcons() {
 	            });
 	        
 	        function transform(d) {
-	        	console.log("d: " + d);
-	        	console.log("d[0]: " + d[0]);
-
 	            d = projection.fromLatLngToDivPixel(d[0]);
 	                return d3.select(this)
 	                		.style("left", (d.x - padding) + "px")
@@ -267,8 +249,10 @@ function markerClick(d) {
 	console.log(d);
 	console.log("test");
 	var contentStringInitial ='Related Information';
-	
-	var infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
+	if(infowindowinitial) {
+		infowindowinitial.close();
+	}
+	infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
 		content: contentStringInitial,		// dom object
 		position: d[0]				// latLng object
 	});
