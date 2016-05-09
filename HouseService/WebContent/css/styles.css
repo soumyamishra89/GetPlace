@@ -82,6 +82,12 @@ footer {
 	padding-left: 10px;
 }
 
+#locationSearch {
+	height: 30px;
+	width: 250px;
+	font-size: 14px;
+}
+
 /* About Page */
 
 .business-header {
