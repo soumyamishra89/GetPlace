@@ -10,8 +10,13 @@ html, body {
 	background-color: #CCC;
 }
 
-.map_content {
+.mapContent {
 	height: 600px;
+}
+
+.locationContent {
+	margin-top: -20px;
+	padding: 20px;
 }
 
 footer {
