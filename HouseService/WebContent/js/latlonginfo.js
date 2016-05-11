@@ -1,8 +1,8 @@
 /**
  * 
  */
-var map, loc, radius = 500, overlay, infowindowinitial, layer, projection, searchPlaceId,
-padding = 10;
+var map, loc, radius = 500, overlay, infowindowinitial, layer, projection, searchPlaceId, placeCountMap = new Map(),
+padding = 10, placeTypeClass = 0;
 //var placesToSearch= ['publicTransport', 'grocery_or_supermarket', 'shopping_mall', 'restaurant', 'hospital', 'park', 'school', 'gym'];
 var request = { radius: radius,
 		    rankby: 'prominence'
@@ -37,7 +37,9 @@ function addSearchCriteria() {
  */
 function loadPlaces() {
     request['location'] = map.getCenter();
-   recreateOverlay();
+    recreateOverlay();
+    placeCountMap = new Map();
+    placeTypeClass = 0;
 	for(var i = 0, criteria; criteria = placesToSearch[i]; i++) {
 		switch(criteria) {
 			case 'publicTransport' :
@@ -65,7 +67,7 @@ function loadPlaces() {
 						   			transportData.push([new google.maps.LatLng(stopLoc.lat, stopLoc.lon), 'publicTransport', stopLoc.products, stopLoc.name]);
 						   		}
 						   		addPlaceIcons(transportData, 'publicTransport');
-						   		//recreateOverlay(transportData);
+						   		placeCountMap.set('publicTransport', transportData.length);
 						    }
 					   	}
 					    	
@@ -75,7 +77,7 @@ function loadPlaces() {
 					break;
 					
 				default: request['type']=criteria;
-						
+						placeCountMap.set(criteria, 0);
 						nearbySearch(criteria);
 					  	break;
 		}
@@ -357,7 +359,9 @@ function extractPlaces(results, status, pagination, placeType) {
 			placeData.push([place.geometry.location, placeType, place.name]);
 	   		
       }
-		addPlaceIcons(placeData, placeType);
+		addPlaceIcons(placeData, placeType+(placeTypeClass++));
+		placeCountMap.set(placeType, placeCountMap.get(placeType) + placeData.length);
+		console.log(placeType + " : "+ placeCountMap.get(placeType));
 	}
   	
     if(pagination.hasNextPage) {
