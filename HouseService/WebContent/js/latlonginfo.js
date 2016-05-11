@@ -1,8 +1,9 @@
 /**
  * 
  */
-var map, heatmap, loc, heatmapData, radius = 500, overlay, tableau=[], infowindowinitial;
-//var placesToSearch= ['publicTransport', 'grocery_or_supermarket', 'shopping_mall', 'restaurant'];
+var map, loc, radius = 500, overlay, infowindowinitial, layer, projection, searchPlaceId,
+padding = 10;
+//var placesToSearch= ['publicTransport', 'grocery_or_supermarket', 'shopping_mall', 'restaurant', 'hospital', 'park', 'school', 'gym'];
 var request = { radius: radius,
 		    rankby: 'prominence'
 		  };
@@ -32,11 +33,11 @@ function addSearchCriteria() {
     }
 }
 /**
- * Loads the heatmap as per the points of interest specified by the user
+ * Loads the places with their icons as per the points of interest specified by the user
  */
-function loadHeatMap() {
+function loadPlaces() {
     request['location'] = map.getCenter();
-    
+   recreateOverlay();
 	for(var i = 0, criteria; criteria = placesToSearch[i]; i++) {
 		switch(criteria) {
 			case 'publicTransport' :
@@ -58,63 +59,41 @@ function loadHeatMap() {
 					   	if(response.indexOf("error")==-1) {
 					   		var stopsInfo = JSON.parse(response);
 					   		var weight = placesToSearch.length-placesToSearch.indexOf('publicTransport');
-					   		tableau=[];
+					   		var transportData = [];
 					   		if(stopsInfo && stopsInfo.StopLocation) {
 						   		for(var i=0, stopLoc;stopLoc=stopsInfo.StopLocation[i];i++) {
-						   			//heatmapData.push({location: new google.maps.LatLng(stopLoc.lat, stopLoc.lon), weight:weight});
-						   			tableau.push([new google.maps.LatLng(stopLoc.lat, stopLoc.lon), stopLoc.products, stopLoc.name]);
+						   			transportData.push([new google.maps.LatLng(stopLoc.lat, stopLoc.lon), 'publicTransport', stopLoc.products, stopLoc.name]);
 						   		}
-						   		addPublicTransportIcons();
+						   		addPlaceIcons(transportData, 'publicTransport');
+						   		//recreateOverlay(transportData);
 						    }
 					   	}
-					    	//document.getElementById("demo").innerHTML = heatmapData;
+					    	
 					  }
 			
 					}; 
 					break;
-		
-			case 'grocery_or_supermarket' :
-					request['type']='grocery_or_supermarket'
+					
+				default: request['type']=criteria;
 						
-				  	service = new google.maps.places.PlacesService(map);
-				  	service.nearbySearch(request, function (results, status, pagination) {
-				  		addPlaceToHeatMap(results, status, pagination, 'grocery_or_supermarket');
-				  	});
-				  	break;
-			case 'shopping_mall' :
-					request['type']='shopping_mall'
-						
-				  	service = new google.maps.places.PlacesService(map);
-				  	service.nearbySearch(request, function (results, status, pagination) {
-				  		addPlaceToHeatMap(results, status, pagination, 'shopping_mall');
-				  	});	
-				  	break;
-		
-			case 'restaurant' :
-					request['type']='restaurant'
-				  	
-				  	service = new google.maps.places.PlacesService(map);
-				  	service.nearbySearch(request, function (results, status, pagination) {
-				  		addPlaceToHeatMap(results, status, pagination, 'restaurant');
-				  	});
-				  	break;
+						nearbySearch(criteria);
+					  	break;
 		}
 	}
 }
-	/*var map = new google.maps.Map(document.getElementById('map'), {
-	    center: loc,
-	    zoom: 15,
-	    scrollwheel: false
-	});*/
-
+	
 // callback called when the map is loaded
 function initMap() {
 	loc = new google.maps.LatLng(59.333344, 18.056963999999994);
 	// adding location of search for request to place search
 	   var styles = [
 	                 {
-	                     "featureType": "transit.station",
+	                     "featureType": "poi",
 	                     "stylers": [{ "visibility": "off" }]
+	                 },
+	                 {
+	                	 "featureType": "transit.station",
+	                	 "stylers": [{ "visibility": "off"}]
 	                 }
 	                 ];
 	map = new google.maps.Map(document.getElementById('map'), {
@@ -125,11 +104,6 @@ function initMap() {
 	 map.setOptions({ styles: styles });
 	// once a map has been created, a searchbox to search for places is attached to it. check googlesearch.js
 	
-	// initialise a heatmap with only map. The data would be loaded once a place has been searched
-    heatmap = new google.maps.visualization.HeatmapLayer({
-        map: map
-    });
-    overlay = new google.maps.OverlayView();
     addSearchBox();
 }
 
@@ -137,158 +111,197 @@ function initMap() {
  * adds the traveltime widget to the google map
  */
 function showTravelTimeMap(){
-   var timeMinutes = document.getElementById("traveltime").value;
    var originPoint = map.getCenter().lat()+','+ map.getCenter().lng();
    var widget = new walkscore.TravelTimeWidget({
     	  map    : map,
     	  origin : originPoint,
     	  show   : true,
     	  mode   : walkscore.TravelTime.Mode.DRIVE,
-    	  time : timeMinutes
+    	  time : 10
     	});
   }
 
-function addPlaceToHeatMap(results, status, pagination, placeType) {
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-	  var weight = placesToSearch.length - placesToSearch.indexOf(placeType);
-	  
-	  for (var i = 0; i < results.length; i++) {
-		  var place = results[i];
-		  console.log(place);
-      /* place.geometry.location,place.name, place.types */
-      //console.log(place.types.contains("restaurant"));
-		  heatmapData.push({location: place.geometry.location, weight:weight});
-		//heatmapData.push(place.geometry.location);
-	  }
-  }
-  	
-    if(pagination.hasNextPage) {
-    	pagination.nextPage();
-    }
-//     }    
-  
-}
-
-function addPublicTransportIcons() {
+/**
+ * creates a new overlay for each search and removes the old one
+ */
+function recreateOverlay(data) {
 	if(overlay) {
 		overlay.setMap(null);
 		overlay = new google.maps.OverlayView();
+	} else {
+		overlay = new google.maps.OverlayView();
 	}
+	
 	overlay.onRemove = function() {
 		d3.selectAll("div.stations").remove();
+		layer = null;
+		projection = null;
 	}
 	
 	overlay.onAdd = function() {
-	      var layer = d3.select(this.getPanes().overlayMouseTarget).append("div")
-	          .attr("class", "stations")
-	         
-	      // Draw each marker as a separate SVG element.
+	       layer = d3.select(this.getPanes().overlayMouseTarget).append("div")
+	          .attr("class", "stations");
+	   // Draw each marker as a separate SVG element.
 	      // We could use a single SVG, but what size would it have?
 	      overlay.draw = function() {
-	        var projection = this.getProjection(),
-	            padding = 10;
-	        var marker = layer.selectAll("svg")
-	            .data(tableau)
-	            .each(transform) // update existing markers
-	          .enter().append("svg")
-	            .each(transform)
-	            .attr("class", "marker")
-	            .attr("viewBox", "0 0 20 20")
-	            .attr("id",function(d){
-	              return d[1];
-	            }).on("click", markerClick);
-	            
-	        marker.append("svg:image")
-	            .attr("width", "100%")
-	            .attr("height", "100%")
-	            .attr("x", 0)
-	            .attr("y", 0)
-	            .attr("xlink:href",function(d){
-	            	var products = d[1];
-	            	var transportCount = 0;
-	            	if(products&1==1) {
-	            		transportCount++;
-	            	}
-	            	if((products&2)==2) {
-	            		transportCount++;
-	            	}
-	            	if((products&4)==4) {
-	            		transportCount++;
-	            	}
-	            	if((products&8)==8) {
-	            		transportCount++;
-	            	}
-	            	if((products&16)==16) {
-	            		transportCount++;
-	            	}
-	            	if((products&32)==32) {
-	            		transportCount++;
-	            	}
-	            	if((products&64)==64) {
-	            		transportCount++;
-	            	}
-	            	if((products&128)==128) {
-	            		transportCount++;
-	            	}	
-	            	if((products&256)==256) {
-	            		transportCount++;
-	            	}
-	            	if((products&512)==512) {
-	            		transportCount++;
-	            	}
-	            	
-	            	if(transportCount>1) {
-	            		return "images/public_transport.png";
-	            	} else {
-	            		switch(products) {
-	            		case 1: return "images/flight.png";
-	            		case 2: return "images/speed_train.jpg";
-	            		case 4: return "images/train.png";
-	            		case 8: return "images/expressbus.png";
-	            		case 16: return "images/train.png";
-	            		case 32: return "images/subway.png";
-	            		case 64: return "images/tram.png";
-	            		case 128: return "images/busstop.png";
-	            		case 256: return "images/ferry.png";
-	            		case 512: return "images/taxi.png";
-	            		}
-	            	}
-	            });
+	         projection = this.getProjection();
 	        
-	        function transform(d) {
-	            d = projection.fromLatLngToDivPixel(d[0]);
-	                return d3.select(this)
-	                		.style("left", (d.x - padding) + "px")
-	                		.style("top", (d.y - padding) + "px");
-	        	}
+	         layer.selectAll("svg").each(transform);	     
 	      }
-	     
 	}
+	
 	overlay.setMap(map);
 }
-
-function markerClick(d) {
+/**
+ * adds icons pertaining to places of interest
+ */
+function addPlaceIcons(data, placeType) {
 	
-	var contentStringInitial ='Related Information';
+    var marker = layer.selectAll("svg."+placeType)
+        .data(data)
+        .each(transform) // update existing markers
+      .enter().append("svg")
+        .each(transform)
+        //.attr("class", "marker")
+        .attr("class", placeType)
+        .attr("viewBox", "0 0 20 20")
+        .on("click", placeClick);
+        
+    marker.append("svg:image")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("xlink:href",function(d) {
+        	var placeOfInterest = d[1];
+        	switch(placeOfInterest) {
+        	case 'publicTransport': var products = d[2];
+            	var transportCount = 0;
+            	if(products&1==1) {
+            		transportCount++;
+            	}
+            	if((products&2)==2) {
+            		transportCount++;
+            	}
+            	if((products&4)==4) {
+            		transportCount++;
+            	}
+            	if((products&8)==8) {
+            		transportCount++;
+            	}
+            	if((products&16)==16) {
+            		transportCount++;
+            	}
+            	if((products&32)==32) {
+            		transportCount++;
+            	}
+            	if((products&64)==64) {
+            		transportCount++;
+            	}
+            	if((products&128)==128) {
+            		transportCount++;
+            	}	
+            	if((products&256)==256) {
+            		transportCount++;
+            	}
+            	if((products&512)==512) {
+            		transportCount++;
+            	}
+            	
+            	if(transportCount>1) {
+            		return "images/public_transport.png";
+            	} else {
+            		switch(products) {
+            		case 1: return "images/flight.png";
+            		case 2: return "images/speed_train.jpg";
+            		case 4: return "images/train.png";
+            		case 8: return "images/expressbus.png";
+            		case 16: return "images/train.png";
+            		case 32: return "images/subway.png";
+            		case 64: return "images/tram.png";
+            		case 128: return "images/busstop.png";
+            		case 256: return "images/ferry.png";
+            		case 512: return "images/taxi.png";
+            		}
+            	}
+            	break;
+            default: return "images/"+placeOfInterest+".png";
+            }
+        });
+}
+
+/**
+ * 
+ * @param d data containing lat long info
+ * @returns d3 transformation
+ */
+function transform(d) {
+    d = projection.fromLatLngToDivPixel(d[0]);
+    return d3.select(this)
+        		.style("left", (d.x - padding) + "px")
+        		.style("top", (d.y - padding) + "px");
+	}
+
+/**
+ * click event attached to the place icon
+ * @param d
+ */
+function placeClick(d) {
 	if(infowindowinitial) {
 		infowindowinitial.close();
 	}
-	
-	var contentStringInitial = addTransportImageToInfoWindow(d, contentStringInitial);
-	
-	infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
-		content: contentStringInitial,		// dom object
-		position: d[0]				// latLng object
-	});
-
+	var destination = d[0].lat()+","+d[0].lng();
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("GET", "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=place_id:" + searchPlaceId + "&destinations=" + destination + "&key=AIzaSyDh9Z6i4XAo_truUafZzfYKBLU60W54it8", true);
+	//xhttp.setRequestHeader("Access-Control-Allow-Origin", "https://api.resrobot.se/location.nearbystops")
+	xhttp.send();
+	  
+	xhttp.onreadystatechange = function() {
+		
+	  if (xhttp.readyState == 4 && xhttp.status == 200) {
+		  var response = xhttp.responseText;
+		  var distance = JSON.parse(response);
+		  if(distance.status=="OK") {
+			  for(var i=0, row; row = distance.rows[i]; i++) {
+				  for(var j=0, element; element = row.elements[j]; j++) {
+					 var distanceLabel = document.getElementById("distLbl");
+					 if(distanceLabel) {
+						 distanceLabel.innerHTML = element.distance.text;
+					 }
+				  }
+			  }
+		  }
+	  }
+	}
+	var placeOfInterest = d[1];
+	switch(placeOfInterest) {
+		case 'publicTransport': 
+	    
+		var contentStringInitial = addTransportImageToInfoWindow(d, contentStringInitial);
+		
+		infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
+			content: contentStringInitial,		// dom object
+			position: d[0]				// latLng object
+		});
+		break;
+		default:
+			var contentStringInitial = '<div>'; 
+			contentStringInitial+='<img src="images/' + d[1] + '.png" style="width:20px;height:20px;"/>';
+			contentStringInitial+='<label id="distLbl"></label></div><br><b>'+d[2].trim()+'</b>';
+			infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
+			content: contentStringInitial,		// dom object
+			position: d[0]				// latLng object
+		});
+		break;
+	}
 	infowindowinitial.open(map);
 }
 
 function addTransportImageToInfoWindow(d, contentStringInitial) {
-	var products = d[1];
+	var products = d[2];
 	var contentStringInitial = '<div>'; 
 	if(products&1==1) {
-		contentStringInitial+='<img src="images/flight.png style="width:20px;height:20px;"/>';
+		contentStringInitial+='<img src="images/flight.png" style="width:20px;height:20px;"/>';
 	}
 	if((products&2)==2) {
 		contentStringInitial+='<img src="images/speed_train.jpg" style="width:20px;height:20px;"/>';
@@ -317,5 +330,37 @@ function addTransportImageToInfoWindow(d, contentStringInitial) {
 	if((products&512)==512) {
 		contentStringInitial+='<img src="images/taxi.png" style="width:20px;height:20px;"/>';
 	}
-	return contentStringInitial+='</div><br><b>'+d[2].trim()+'</b>';
+	return contentStringInitial+='<label id="distLbl"></label></div><br><b>'+d[3].trim()+'</b>';
+}
+
+function nearbySearch(placeType){
+  	service = new google.maps.places.PlacesService(map);
+	
+  	service.nearbySearch(request, function (results, status, pagination) {
+  		extractPlaces(results, status, pagination, placeType);
+  	});
+}
+
+/**
+ * Extracts the lat long and other relevant information from google place search
+ * @param results from google place search
+ * @param status status of the search
+ * @param pagination results divided into pages (max 3)
+ * @param placeType the place of interest selected by user
+ */
+function extractPlaces(results, status, pagination, placeType) {
+	var placeData = [];
+	if (status == google.maps.places.PlacesServiceStatus.OK) {
+		var weight = placesToSearch.length - placesToSearch.indexOf(placeType);
+		for (var i = 0; i < results.length; i++) {
+			var place = results[i];
+			placeData.push([place.geometry.location, placeType, place.name]);
+	   		
+      }
+		addPlaceIcons(placeData, placeType);
+	}
+  	
+    if(pagination.hasNextPage) {
+    	pagination.nextPage();
+    }
 }

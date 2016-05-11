@@ -37,7 +37,7 @@ function addSearchBox() {
 	    if (places.length == 0) {
 	      return;
 	    }
-
+	    
     // Clear out the old markers.
     markers.forEach(function(marker) {
        marker.setMap(null);
@@ -48,7 +48,18 @@ function addSearchBox() {
     var bounds = new google.maps.LatLngBounds();
     
     places.forEach(function(place) {
+    	searchPlaceId = place.place_id;
+    	var request = {
+    			  placeId: place.place_id
+    			};
 
+    			service = new google.maps.places.PlacesService(map);
+    			service.getDetails(request, callback);
+
+    			function callback(place1, status) {
+    			  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    			  }
+    			}
         // change the location title in the right side bar
         document.getElementById('locationTitle').innerHTML = place.name;
 
@@ -59,15 +70,6 @@ function addSearchBox() {
           anchor: new google.maps.Point(17, 34),
           scaledSize: new google.maps.Size(25, 25)
         };
-
-      
-      // Create a marker for each place.
-      /*markers.push(new google.maps.Marker({
-        map: map,
-        icon: icon,
-        title: place.name,
-        position: place.geometry.location
-      }));*/
 
       // set inforwindow and marker
       var infowindow = new google.maps.InfoWindow({
@@ -96,13 +98,9 @@ function addSearchBox() {
     });
       // after a place is searched the heatmaps are set
     map.setCenter(bounds.getCenter());
-    heatmapData = new google.maps.MVCArray() ;
-    heatmap.setData(heatmapData);
     
     showTravelTimeMap();
-    loadHeatMap();
-   // map.fitBounds(bounds);
-    //map.setZoom(13);
+    loadPlaces();
     
   });
 }
