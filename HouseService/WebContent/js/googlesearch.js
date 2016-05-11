@@ -14,7 +14,7 @@ function enabledisableSearch() {
 function addSearchBox() {
 	locationsearchBox = document.getElementById('locationSearch');
 	searchBox= new google.maps.places.SearchBox(locationsearchBox);
-	map.controls[google.maps.ControlPosition.TOP_LEFT].push(locationsearchBox);
+	//map.controls[google.maps.ControlPosition.TOP_LEFT].push(locationsearchBox);
 
 	// if a search place has been provided then it will be added to search box in this page
 	if(window.location.search!=="") {

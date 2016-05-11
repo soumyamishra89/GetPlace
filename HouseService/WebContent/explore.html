@@ -30,50 +30,50 @@
 
 	<title>InSiteMap</title>
 	<style>
-html, body, #map {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-.stations, .stations svg {
-  position: absolute;
-}
-.stations svg {
-  width: 20px;
-  height: 20px;
- 
-  font: 10px sans-serif;
-}
-.stations circle {
-  stroke: black;
-  stroke-width: 1.5px;
-}
-input.minutes {
-    text-align: right;
-    padding-right: 15px;
-}
-</style>
+	html, body, #map {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	.stations, .stations svg {
+		position: absolute;
+	}
+	.stations svg {
+		width: 20px;
+		height: 20px;
+
+		font: 10px sans-serif;
+	}
+	.stations circle {
+		stroke: black;
+		stroke-width: 1.5px;
+	}
+	input.minutes {
+		text-align: right;
+		padding-right: 15px;
+	}
+	</style>
 </head>
 <body>
 
 	<!-- Navigation -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">InSiteMap</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                	<li>
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html">InSiteMap</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li>
 						<a href="index.html">Home</a>
 					</li>
 					<li>
@@ -82,12 +82,12 @@ input.minutes {
 					<li>
 						<a href="about.html">About</a>
 					</li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
 	
 <!-- 	<div class="searchLine">
 		<form class="form-inline">
@@ -127,7 +127,7 @@ input.minutes {
 		</form>
 	</div> -->
 
-	<div class="selectLine">
+<!-- 	<div class="selectLine">
 		<form class="form-inline">
 			<div class="form-group">
 				<label>Places of Interest:</label>
@@ -162,16 +162,92 @@ input.minutes {
 			<div class="form-group">
 				<label for="traveltime">Travel Time (mins)</label>
 				<input type="number" id="traveltime" class="minutes" value="5" min="5" max="30" step="5"/>
-			
-				<button type="button" id="googlesearchButton" class="btn searchButton2" onclick="searchMap()" disabled="disabled">Search</button>
-				</div>
-		</form>
-	</div>
 
-	<input id="locationSearch" class="controls" type="text" placeholder="Search Location" oninput="enabledisableSearch()">
+				<button type="button" id="googlesearchButton" class="btn searchButton2" onclick="searchMap()" disabled="disabled">Search</button>
+			</div>
+		</form>
+	</div> -->
+
+	<!-- <input id="locationSearch" class="controls" type="text" placeholder="Search Location" oninput="enabledisableSearch()"> -->
 	
-	<div class="row">
-		<div class="col-md-9">
+	<div class="row" style="margin-top: 50px;">
+		<div class="col-md-3">
+			<div class="locationContent">
+				<br/>
+				<div class="row">
+					<div class="col-md-12">
+						<label>Searching:</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input id="locationSearch" class="controls" type="text" placeholder="Search Location" oninput="enabledisableSearch()">
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-md-12">
+						<label>Places of Interest:</label>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-md-12">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="placeOfInterest" id="publicTransport" value="publicTransport" onchange="addSearchCriteria()">Public Transport
+						</label>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-md-12">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="placeOfInterest" id="resturant" value="restaurant" onchange="addSearchCriteria()">Restaurant
+						</label>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-md-12">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="placeOfInterest" id="groceryStore" value="grocery_or_supermarket" onchange="addSearchCriteria()">Grocery Store
+						</label>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-md-12">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="placeOfInterest" id="shoppingMall" value="shopping_mall" onchange="addSearchCriteria()">Shopping Mall
+						</label>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-md-12">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="placeOfInterest" id="alcoholShop" value="alcoholShop" onchange="addSearchCriteria()">Alcohol Shop
+						</label>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="traveltime">Travel Time (mins)</label>
+							<input type="number" id="traveltime" class="minutes" value="5" min="5" max="30" step="5"/>
+						</div>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-md-12">
+						<button type="button" id="googlesearchButton" class="btn searchButton2" onclick="searchMap()" disabled="disabled">Search</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
 			<div class="mapContent">
 				<div id="map"></div>
 			</div>
