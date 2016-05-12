@@ -20,6 +20,7 @@
 	<script type="text/javascript" src="js/googlesearch.js"></script>
 	<script src="js/latlonginfo.js"></script>
 	<script type="text/javascript" src="js/customfunctions.js"></script>
+	<script src="js/BootSideMenu.js"></script>
 
 	<!-- Google Map -->
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDh9Z6i4XAo_truUafZzfYKBLU60W54it8&callback=initMap&libraries=visualization,places" async defer></script>
@@ -27,6 +28,14 @@
 	<!-- CSS -->
 	<link rel="stylesheet", href="css/styles.css">
 	<link rel="stylesheet", href="css/googlesearch.css">
+	<link rel="stylesheet" href="css/BootSideMenu.css">
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('#leftSidebar').BootSideMenu({side:"left", autoClose:false});
+		$('#rightSidebar').BootSideMenu({side:"right"});
+	});
+	</script>
 
 	<title>InSiteMap</title>
 	<style>
@@ -54,9 +63,9 @@
 		padding-right: 15px;
 	}
 	#distLbl {
-	display:inline-block;
-	float:right
-}
+		display:inline-block;
+		float:right
+	}
 	</style>
 
 </head>
@@ -93,9 +102,9 @@
 		</div>
 		<!-- /.container -->
 	</nav>
-	
-	<div class="row" style="margin-top: 50px;">
-		<div class="col-md-3">
+
+	<!-- Left Sidebar -->
+	<div id="leftSidebar">
 			<div class="locationContent">
 				<br/>
 				<div class="row">
@@ -186,14 +195,12 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="mapContent">
-				<div id="map"></div>
-			</div>
-		</div>
-		<div class="col-md-3">
-			<div class="locationContent">
+	</div>
+	<!--/Left Sidebar -->
+
+	<!--Right Sidebar -->
+	<div id="rightSidebar">
+		<div class="locationContent">
 				<div class="row">
 					<div class="col-md-12">
 						<h3 id="locationTitle">Location Title</h3>
@@ -204,6 +211,14 @@
 						<p id="locationDetail">Detailed information</p>
 					</div>
 				</div>
+			</div>
+	</div>
+	<!--/Right Sidebar-->
+	
+	<div class="row" style="margin-top: 50px;">
+		<div class="col-md-12">
+			<div class="mapContent">
+				<div id="map"></div>
 			</div>
 		</div>
 	</div> 
