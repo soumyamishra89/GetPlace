@@ -102,6 +102,7 @@
 .toggler{
       -webkit-background-clip: padding-box;
       background-clip: padding-box;
+      background-color: white;
       border: 1px solid #ccc;
       border: 1px solid rgba(0, 0, 0, .15);
       width: 20px;
