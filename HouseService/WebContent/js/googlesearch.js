@@ -44,10 +44,22 @@ function addSearchBox() {
     });
     markers = [];
 
+    // Hide all the location details
+    $("#nearby_restaurant").hide();
+    $("#nearby_shopping_mall").hide();
+    $("#nearby_grocery_or_supermarket").hide();
+    $("#nearby_hospital").hide();
+    $("#nearby_gym").hide();
+    $("#nearby_school").hide();
+    $("#nearby_park").hide();
+
     // For each place, get the icon, name and location.
     var bounds = new google.maps.LatLngBounds();
     
     places.forEach(function(place) {
+      console.log("place");
+      console.log(place);
+
     	searchPlaceId = place.place_id;
     	var request = {
     			  placeId: place.place_id
@@ -62,6 +74,9 @@ function addSearchBox() {
     			}
         // change the location title in the right side bar
         document.getElementById('locationTitle').innerHTML = place.name;
+
+        // open the right side bar
+        $(".openSidebar").click();
 
         var icon = {
           url: place.icon,

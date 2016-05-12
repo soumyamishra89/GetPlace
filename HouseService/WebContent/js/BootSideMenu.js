@@ -31,14 +31,16 @@
 		newCode += "</div>";
 		newCode += "<div class=\"toggler\">\n";
 		newCode += "	<span class=\"glyphicon glyphicon-chevron-right\">&nbsp;</span> <span class=\"glyphicon glyphicon-chevron-left\">&nbsp;</span>\n";
-		newCode += "</div>\n";
+		newCode += "</div>";
+		newCode += "<div class=\"openSidebar\">\n";
+		newCode += "</div>";
 
 		//Mod suggested by asingh3
 		//https://github.com/AndreaLombardo/BootSideMenu/issues/1
 		
 		//this.html(newCode);
 	
-    		var wrapper = $(newCode);
+    	var wrapper = $(newCode);
 		// copy the children to the wrapper.
 		$.each(this.children(), function () {
 			$('.panel-content', wrapper).append(this);
@@ -111,6 +113,17 @@
 		doAnimation(container, containerWidth, side, status);
 	});
 
+	// only used to open the sidebar
+	$(document).on('click','.openSidebar', function(){
+		var toggler = $(this);
+		var container = toggler.parent();
+		//var listaClassi = container[0].classList; //Old
+		var listaClassi = $(container[0]).attr('class').split(/\s+/); //IE9 Fix - Thanks Nicolas Renaud
+		var side = getSide(listaClassi);
+		var containerWidth = container.width();
+		doOpenAnimation(container, containerWidth, side);
+	});
+
 	/*Cerca un div con classe submenu e id uguale a quello passato*/
 	function searchSubMenu(id){
 		var found = false;
@@ -139,6 +152,7 @@ function getSide(listaClassi){
 	}
 	return side;
 }
+
 //esegue l'animazione
 function doAnimation(container, containerWidth, sidebarSide, sidebarStatus){
 	var toggler = container.children()[1];
@@ -168,9 +182,24 @@ function doAnimation(container, containerWidth, sidebarSide, sidebarStatus){
 			toggleArrow(toggler, "left");
 		}
 		container.attr('data-status', 'opened');
-
 	}
+}
 
+//open all the sidebar
+function doOpenAnimation(container, containerWidth, sidebarSide){
+	var toggler = container.children()[1];
+	if(sidebarSide=="left"){
+		container.animate({
+			left:0
+		});
+		toggleArrow(toggler, "right");
+	}else if(sidebarSide=="right"){
+		container.animate({
+			right:0
+		});
+		toggleArrow(toggler, "left");
+	}
+	container.attr('data-status', 'opened');
 }
 
 function toggleArrow(toggler, side){

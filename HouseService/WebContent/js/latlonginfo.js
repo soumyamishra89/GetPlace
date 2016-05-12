@@ -1,8 +1,10 @@
 /**
  * 
  */
+
 var map, loc, radius = 500, overlay, infowindowinitial, layer, projection, searchPlaceId, placeCountMap = new Map(),
 padding = 10, placeTypeClass = 0;
+
 //var placesToSearch= ['publicTransport', 'grocery_or_supermarket', 'shopping_mall', 'restaurant', 'hospital', 'park', 'school', 'gym'];
 var request = { radius: radius,
 		    rankby: 'prominence'
@@ -14,7 +16,6 @@ function searchMap(){
         keyCode: 13
     });
 }
-
 
 var placesToSearch = [];
 function addSearchCriteria() {
@@ -351,20 +352,90 @@ function nearbySearch(placeType){
  * @param placeType the place of interest selected by user
  */
 function extractPlaces(results, status, pagination, placeType) {
+	console.log("extractPlaces");
 	var placeData = [];
 	if (status == google.maps.places.PlacesServiceStatus.OK) {
 		var weight = placesToSearch.length - placesToSearch.indexOf(placeType);
 		for (var i = 0; i < results.length; i++) {
 			var place = results[i];
 			placeData.push([place.geometry.location, placeType, place.name]);
-	   		
-      }
+        }
+
 		addPlaceIcons(placeData, placeType+(placeTypeClass++));
 		placeCountMap.set(placeType, placeCountMap.get(placeType) + placeData.length);
-		console.log(placeType + " : "+ placeCountMap.get(placeType));
+		
+		setLocationDetails(placeType, placeCountMap.get(placeType));
 	}
   	
     if(pagination.hasNextPage) {
     	pagination.nextPage();
     }
+}
+
+function setLocationDetails(placeType, count) {
+	switch(placeType) {
+		case 'restaurant' :  
+				$('#nearby_restaurant').show();
+				document.getElementById('nearby_restaurant_count').innerHTML = count;
+				if (count > 1) {
+					document.getElementById('nearby_restaurant_count').innerHTML += " Restaurants";
+				}else{
+					document.getElementById('nearby_restaurant_count').innerHTML += " Restaurant"
+				}
+			    break;
+		case 'shopping_mall' :  
+				$('#nearby_shopping_mall').show();
+				document.getElementById('nearby_shopping_mall_count').innerHTML = count;
+				if (count > 1) {
+					document.getElementById('nearby_shopping_mall_count').innerHTML += " Shopping Malls";
+				}else{
+					document.getElementById('nearby_shopping_mall_count').innerHTML += " Shopping Mall"
+				}
+			    break;
+		case 'grocery_or_supermarket' :  
+				$('#nearby_grocery_or_supermarket').show();
+				document.getElementById('nearby_grocery_or_supermarket_count').innerHTML = count;
+				if (count > 1) {
+					document.getElementById('nearby_grocery_or_supermarket_count').innerHTML += " Gorcery Stores";
+				}else{
+					document.getElementById('nearby_grocery_or_supermarket_count').innerHTML += " Gorcery Store"
+				}
+			    break;
+		case 'hospital' :  
+				$('#nearby_hospital').show();
+				document.getElementById('nearby_hospital_count').innerHTML = count;
+				if (count > 1) {
+					document.getElementById('nearby_hospital_count').innerHTML += " Hospitals";
+				}else{
+					document.getElementById('nearby_hospital_count').innerHTML += " Hospital"
+				}
+			    break;
+		case 'gym' :  
+				$('#nearby_gym').show();
+				document.getElementById('nearby_gym_count').innerHTML = count;
+				if (count > 1) {
+					document.getElementById('nearby_gym_count').innerHTML += " Gyms";
+				}else{
+					document.getElementById('nearby_gym_count').innerHTML += " Gym"
+				}
+			    break;
+		case 'school' :  
+				$('#nearby_school').show();
+				document.getElementById('nearby_school_count').innerHTML = count;
+				if (count > 1) {
+					document.getElementById('nearby_school_count').innerHTML += " Schools";
+				}else{
+					document.getElementById('nearby_school_count').innerHTML += " School"
+				}
+			    break;
+		case 'park' :  
+				$('#nearby_park').show();
+				document.getElementById('nearby_park_count').innerHTML = count;
+				if (count > 1) {
+					document.getElementById('nearby_park_count').innerHTML += " Parks";
+				}else{
+					document.getElementById('nearby_park_count').innerHTML += " Park"
+				}
+			    break;
+	}
 }

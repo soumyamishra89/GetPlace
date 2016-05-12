@@ -15,6 +15,14 @@
 	<!-- Bootstrap - Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
+	<script src="js/BootSideMenu.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#leftSidebar').BootSideMenu({side:"left", autoClose:false});
+			$('#rightSidebar').BootSideMenu({side:"right"});
+		});
+	</script>
+
 	<!-- JS -->
 	<script src="js/d3.v3.min.js"></script>
 	<script type="text/javascript" src="js/googlesearch.js"></script>
@@ -22,7 +30,6 @@
 	<script src="js/html2canvas.js"></script>
 	<script src="js/imageconverter.js"></script>
 	<script type="text/javascript" src="js/customfunctions.js"></script>
-	<script src="js/BootSideMenu.js"></script>
 
 	<!-- Google Map -->
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDh9Z6i4XAo_truUafZzfYKBLU60W54it8&callback=initMap&libraries=visualization,places" async defer></script>
@@ -31,13 +38,6 @@
 	<link rel="stylesheet", href="css/styles.css">
 	<link rel="stylesheet", href="css/googlesearch.css">
 	<link rel="stylesheet" href="css/BootSideMenu.css">
-
-	<script type="text/javascript">
-	$(document).ready(function(){
-		$('#leftSidebar').BootSideMenu({side:"left", autoClose:false});
-		$('#rightSidebar').BootSideMenu({side:"right"});
-	});
-	</script>
 
 	<title>InSiteMap</title>
 	<style>
@@ -186,12 +186,34 @@
 		<div class="locationContent" id="detailedLocationInfo">
 			<div class="row">
 				<div class="col-md-12">
-					<h3 id="locationTitle">Location Title</h3>
+					<h3 id="locationTitle"> </h3>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<p id="locationDetail">Detailed information</p>
+					<div id="locationDetail">
+						<div id="nearby_restaurant">
+							<p id="nearby_restaurant_count"></p>
+						</div>
+						<div id="nearby_grocery_or_supermarket">
+							<p id="nearby_grocery_or_supermarket_count"></p>
+						</div>
+						<div id="nearby_shopping_mall">
+							<p id="nearby_shopping_mall_count"></p>
+						</div>
+						<div id="nearby_hospital">
+							<p id="nearby_hospital_count"></p>
+						</div>
+						<div id="nearby_school">
+							<p id="nearby_school_count"></p>
+						</div>
+						<div id="nearby_park">
+							<p id="nearby_parkount"></p>
+						</div>
+						<div id="nearby_gym">
+							<p id="nearby_gym_count"></p>
+						</div>
+					</div>
 				</div>
 			</div>
 			<button type="button" id="btnSave" class="btn searchButton2">Save</button>
@@ -215,5 +237,18 @@
 			<p class="copyright text-muted small" style="padding:10px;">Copyright &copy; InSiteMap 2016. All Rights Reserved.</p>
 		</div>  
 	</div>
+
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#nearby_restaurant").hide();
+			$("#nearby_shopping_mall").hide();
+			$("#nearby_grocery_or_supermarket").hide();
+			$("#nearby_hospital").hide();
+			$("#nearby_gym").hide();
+			$("#nearby_school").hide();
+			$("#nearby_park").hide();
+		});
+	</script>
 </body>
 </html>
