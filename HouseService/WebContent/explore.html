@@ -19,6 +19,8 @@
 	<script src="js/d3.v3.min.js"></script>
 	<script type="text/javascript" src="js/googlesearch.js"></script>
 	<script src="js/latlonginfo.js"></script>
+	<script src="js/html2canvas.js"></script>
+	<script src="js/imageconverter.js"></script>
 	<script type="text/javascript" src="js/customfunctions.js"></script>
 
 	<!-- Google Map -->
@@ -193,7 +195,7 @@
 			</div>
 		</div>
 		<div class="col-md-3">
-			<div class="locationContent">
+			<div class="locationContent" id="detailedLocationInfo">
 				<div class="row">
 					<div class="col-md-12">
 						<h3 id="locationTitle">Location Title</h3>
@@ -204,6 +206,7 @@
 						<p id="locationDetail">Detailed information</p>
 					</div>
 				</div>
+				<button type="button" id="btnSave" class="btn searchButton2">Save</button>
 			</div>
 		</div>
 	</div> 
