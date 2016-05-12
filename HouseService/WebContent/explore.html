@@ -28,6 +28,7 @@
 	<script type="text/javascript" src="js/googlesearch.js"></script>
 	<script src="js/latlonginfo.js"></script>
 	<script src="js/html2canvas.js"></script>
+	<script src="js/jquery.watermark.js"></script>
 	<script src="js/imageconverter.js"></script>
 	<script type="text/javascript" src="js/customfunctions.js"></script>
 
@@ -183,7 +184,8 @@
 
 	<!--Right Sidebar -->
 	<div id="rightSidebar">
-		<div class="locationContent" id="detailedLocationInfo">
+		<div class="locationContent">
+		<div id="detailedLocationInfo">
 			<div class="row">
 				<div class="col-md-12">
 					<h3 id="locationTitle"> </h3>
@@ -216,7 +218,9 @@
 					</div>
 				</div>
 			</div>
+			</div>
 			<button type="button" id="btnSave" class="btn searchButton2">Save</button>
+			<div id="contentImg" style="visibility:hidden;"></div>
 		</div>
 	</div>
 	<!--/Right Sidebar-->
