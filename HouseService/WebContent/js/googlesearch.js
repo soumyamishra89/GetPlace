@@ -14,12 +14,13 @@ function enabledisableSearch() {
 function addSearchBox() {
 	locationsearchBox = document.getElementById('locationSearch');
 	searchBox= new google.maps.places.SearchBox(locationsearchBox);
-	//map.controls[google.maps.ControlPosition.TOP_LEFT].push(locationsearchBox);
+	map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationsearchBox);
 
 	// if a search place has been provided then it will be added to search box in this page
 	if(window.location.search!=="") {
 		decodeURI(window.location.href).replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value){
-			locationsearchBox.value=value;
+			$('#locationSearch').val(value);
+			console.log(locationsearchBox);
       document.getElementById('locationTitle').innerHTML = value;
 		});
 		locationsearchBox.oninput();
@@ -57,9 +58,6 @@ function addSearchBox() {
     var bounds = new google.maps.LatLngBounds();
     
     places.forEach(function(place) {
-      console.log("place");
-      console.log(place);
-
     	searchPlaceId = place.place_id;
     	var request = {
     			  placeId: place.place_id
@@ -115,7 +113,7 @@ function addSearchBox() {
     map.setCenter(bounds.getCenter());
     
     showTravelTimeMap();
-    loadPlaces();
+    recreateOverlay();
     
   });
 }

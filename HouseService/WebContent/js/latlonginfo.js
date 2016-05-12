@@ -1,9 +1,8 @@
 /**
  * 
  */
-
-var map, loc, radius = 500, overlay, infowindowinitial, layer, projection, searchPlaceId, placeCountMap = new Map(),
-padding = 10, placeTypeClass = 0;
+var map, loc, radius = 500, overlay, infowindowinitial, layer, projection, searchPlaceId, placeCountMap = new Map(), widget,
+padding = 10, placeTypeClass = 0, travelTimeBound;
 
 //var placesToSearch= ['publicTransport', 'grocery_or_supermarket', 'shopping_mall', 'restaurant', 'hospital', 'park', 'school', 'gym'];
 var request = { radius: radius,
@@ -38,7 +37,7 @@ function addSearchCriteria() {
  */
 function loadPlaces() {
     request['location'] = map.getCenter();
-    recreateOverlay();
+    
     placeCountMap = new Map();
     placeTypeClass = 0;
 	for(var i = 0, criteria; criteria = placesToSearch[i]; i++) {
@@ -114,20 +113,32 @@ function initMap() {
  * adds the traveltime widget to the google map
  */
 function showTravelTimeMap(){
-   var originPoint = map.getCenter().lat()+','+ map.getCenter().lng();
-   var widget = new walkscore.TravelTimeWidget({
+	var originPoint = map.getCenter().lat()+','+ map.getCenter().lng();
+	if(widget){
+		widget.setOrigin(originPoint);
+	}
+	
+    widget = new walkscore.TravelTimeWidget({
     	  map    : map,
     	  origin : originPoint,
     	  show   : true,
-    	  mode   : walkscore.TravelTime.Mode.DRIVE,
-    	  time : 10
+    	  mode   : walkscore.TravelTime.Mode.WALK,
+    	  time : 5
     	});
+    //widget.getBounds();
+    widget.on("time_changed", function() {
+    		travelTimeBound = widget.getBounds();
+    		radius = distanceBetweenPoints(travelTimeBound.getSouthWest(), travelTimeBound.getNorthEast())*500;    		
+    		request['radius'] = radius;
+    		
+    		recreateOverlay();
+    });
   }
 
 /**
  * creates a new overlay for each search and removes the old one
  */
-function recreateOverlay(data) {
+function recreateOverlay() {
 	if(overlay) {
 		overlay.setMap(null);
 		overlay = new google.maps.OverlayView();
@@ -144,10 +155,11 @@ function recreateOverlay(data) {
 	overlay.onAdd = function() {
 	       layer = d3.select(this.getPanes().overlayMouseTarget).append("div")
 	          .attr("class", "stations");
+	       projection = this.getProjection();
+	       loadPlaces();
 	   // Draw each marker as a separate SVG element.
 	      // We could use a single SVG, but what size would it have?
 	      overlay.draw = function() {
-	         projection = this.getProjection();
 	        
 	         layer.selectAll("svg").each(transform);	     
 	      }
@@ -159,78 +171,79 @@ function recreateOverlay(data) {
  * adds icons pertaining to places of interest
  */
 function addPlaceIcons(data, placeType) {
-	
-    var marker = layer.selectAll("svg."+placeType)
-        .data(data)
-        .each(transform) // update existing markers
-      .enter().append("svg")
-        .each(transform)
-        //.attr("class", "marker")
-        .attr("class", placeType)
-        .attr("viewBox", "0 0 20 20")
-        .on("click", placeClick);
-        
-    marker.append("svg:image")
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("xlink:href",function(d) {
-        	var placeOfInterest = d[1];
-        	switch(placeOfInterest) {
-        	case 'publicTransport': var products = d[2];
-            	var transportCount = 0;
-            	if(products&1==1) {
-            		transportCount++;
-            	}
-            	if((products&2)==2) {
-            		transportCount++;
-            	}
-            	if((products&4)==4) {
-            		transportCount++;
-            	}
-            	if((products&8)==8) {
-            		transportCount++;
-            	}
-            	if((products&16)==16) {
-            		transportCount++;
-            	}
-            	if((products&32)==32) {
-            		transportCount++;
-            	}
-            	if((products&64)==64) {
-            		transportCount++;
-            	}
-            	if((products&128)==128) {
-            		transportCount++;
-            	}	
-            	if((products&256)==256) {
-            		transportCount++;
-            	}
-            	if((products&512)==512) {
-            		transportCount++;
-            	}
-            	
-            	if(transportCount>1) {
-            		return "images/public_transport.png";
-            	} else {
-            		switch(products) {
-            		case 1: return "images/flight.png";
-            		case 2: return "images/speed_train.jpg";
-            		case 4: return "images/train.png";
-            		case 8: return "images/expressbus.png";
-            		case 16: return "images/train.png";
-            		case 32: return "images/subway.png";
-            		case 64: return "images/tram.png";
-            		case 128: return "images/busstop.png";
-            		case 256: return "images/ferry.png";
-            		case 512: return "images/taxi.png";
-            		}
-            	}
-            	break;
-            default: return "images/"+placeOfInterest+".png";
-            }
-        });
+	if(layer) {
+	    var marker = layer.selectAll("svg."+placeType)
+	        .data(data)
+	        .each(transform) // update existing markers
+	        .enter().append("svg")
+	        .each(transform)
+	        //.attr("class", "marker")
+	        .attr("class", placeType)
+	        .attr("viewBox", "0 0 20 20")
+	        .on("click", placeClick);
+	        
+	    marker.append("svg:image")
+	        .attr("width", "100%")
+	        .attr("height", "100%")
+	        .attr("x", 0)
+	        .attr("y", 0)
+	        .attr("xlink:href",function(d) {
+	        	var placeOfInterest = d[1];
+	        	switch(placeOfInterest) {
+	        	case 'publicTransport': var products = d[2];
+	            	var transportCount = 0;
+	            	if(products&1==1) {
+	            		transportCount++;
+	            	}
+	            	if((products&2)==2) {
+	            		transportCount++;
+	            	}
+	            	if((products&4)==4) {
+	            		transportCount++;
+	            	}
+	            	if((products&8)==8) {
+	            		transportCount++;
+	            	}
+	            	if((products&16)==16) {
+	            		transportCount++;
+	            	}
+	            	if((products&32)==32) {
+	            		transportCount++;
+	            	}
+	            	if((products&64)==64) {
+	            		transportCount++;
+	            	}
+	            	if((products&128)==128) {
+	            		transportCount++;
+	            	}	
+	            	if((products&256)==256) {
+	            		transportCount++;
+	            	}
+	            	if((products&512)==512) {
+	            		transportCount++;
+	            	}
+	            	
+	            	if(transportCount>1) {
+	            		return "images/public_transport.png";
+	            	} else {
+	            		switch(products) {
+	            		case 1: return "images/flight.png";
+	            		case 2: return "images/speed_train.jpg";
+	            		case 4: return "images/train.png";
+	            		case 8: return "images/expressbus.png";
+	            		case 16: return "images/train.png";
+	            		case 32: return "images/subway.png";
+	            		case 64: return "images/tram.png";
+	            		case 128: return "images/busstop.png";
+	            		case 256: return "images/ferry.png";
+	            		case 512: return "images/taxi.png";
+	            		}
+	            	}
+	            	break;
+	            default: return "images/"+placeOfInterest+".png";
+	            }
+	        });
+	}
 }
 
 /**
@@ -250,12 +263,13 @@ function transform(d) {
  * @param d
  */
 function placeClick(d) {
+	
 	if(infowindowinitial) {
 		infowindowinitial.close();
 	}
 	var destination = d[0].lat()+","+d[0].lng();
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("GET", "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=place_id:" + searchPlaceId + "&destinations=" + destination + "&key=AIzaSyDh9Z6i4XAo_truUafZzfYKBLU60W54it8", true);
+	xhttp.open("GET", "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=place_id:" + searchPlaceId + "&destinations=" + destination + "&mode=walking&key=AIzaSyDh9Z6i4XAo_truUafZzfYKBLU60W54it8", true);
 	//xhttp.setRequestHeader("Access-Control-Allow-Origin", "https://api.resrobot.se/location.nearbystops")
 	xhttp.send();
 	  
@@ -290,7 +304,11 @@ function placeClick(d) {
 		default:
 			var contentStringInitial = '<div>'; 
 			contentStringInitial+='<img src="images/' + d[1] + '.png" style="width:20px;height:20px;"/>';
-			contentStringInitial+='<label id="distLbl"></label></div><br><b>'+d[2].trim()+'</b>';
+			contentStringInitial+='<label id="distLbl"></label></div><br><b>'+d[2].trim();
+			if(d[3]) {
+				contentStringInitial+='(rating: ' + d[3] +')';
+			}
+			contentStringInitial+='</b>';
 			infowindowinitial = new google.maps.InfoWindow({	// infowindow creation when cluster clicked first time
 			content: contentStringInitial,		// dom object
 			position: d[0]				// latLng object
@@ -352,15 +370,20 @@ function nearbySearch(placeType){
  * @param placeType the place of interest selected by user
  */
 function extractPlaces(results, status, pagination, placeType) {
-	console.log("extractPlaces");
+
 	var placeData = [];
 	if (status == google.maps.places.PlacesServiceStatus.OK) {
 		var weight = placesToSearch.length - placesToSearch.indexOf(placeType);
 		for (var i = 0; i < results.length; i++) {
 			var place = results[i];
-			placeData.push([place.geometry.location, placeType, place.name]);
-        }
-
+			if(travelTimeBound) {
+				if (travelTimeBound.contains(place.geometry.location)) {
+					placeData.push([place.geometry.location, placeType, place.name, place.rating]);
+				}
+			} else {
+				placeData.push([place.geometry.location, placeType, place.name, place.rating]);
+			}
+      }
 		addPlaceIcons(placeData, placeType+(placeTypeClass++));
 		placeCountMap.set(placeType, placeCountMap.get(placeType) + placeData.length);
 		
@@ -439,3 +462,27 @@ function setLocationDetails(placeType, count) {
 			    break;
 	}
 }
+/**
+ * Calculates the distance between two latlng locations in km.
+ * @see http://www.movable-type.co.uk/scripts/latlong.html
+ *
+ * @param {google.maps.LatLng} p1 The first lat lng point.
+ * @param {google.maps.LatLng} p2 The second lat lng point.
+ * @return {number} The distance between the two points in km.
+ * 
+*/
+function distanceBetweenPoints(p1, p2) {
+	  if (!p1 || !p2) {
+	    return 0;
+	  }
+
+	  var R = 6371; // Radius of the Earth in km
+	  var dLat = (p2.lat() - p1.lat()) * Math.PI / 180;
+	  var dLon = (p2.lng() - p1.lng()) * Math.PI / 180;
+	  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+	    Math.cos(p1.lat() * Math.PI / 180) * Math.cos(p2.lat() * Math.PI / 180) *
+	    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	  var d = R * c;
+	  return d;
+	};
