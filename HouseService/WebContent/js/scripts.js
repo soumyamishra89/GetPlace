@@ -27,12 +27,16 @@ function onScroll(event){
 	$('nav a').each(function () {
 		var currentLink = $(this);
 		var refElement = $(currentLink.attr("href"));
-		if (refElement.position().top <= scrollPosition && refElement.position().top + refElement.height() > scrollPosition) {
-			$('nav ul li a').removeClass("active");
-			currentLink.addClass("active");
-		}
-		else{
-			currentLink.removeClass("active");
+		if (refElement.position()) {
+			if (refElement.position().top <= scrollPosition && refElement.position().top + refElement.height() > scrollPosition) {
+				$('nav ul li a').removeClass("active");
+				currentLink.addClass("active");
+			}
+			else{
+				currentLink.removeClass("active");
+			}
+		}else{
+			// do nothing
 		}
 	});
 }
