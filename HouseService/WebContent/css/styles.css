@@ -64,6 +64,28 @@ footer {
 	
 }
 
+.stations, .stations svg {
+	position: absolute;
+}
+.stations svg {
+	width: 20px;
+	height: 20px;
+
+	font: 10px sans-serif;
+}
+.stations circle {
+	stroke: black;
+	stroke-width: 1.5px;
+}
+input.minutes {
+	text-align: right;
+	padding-right: 15px;
+}
+#distLbl {
+	display:inline-block;
+	float:right
+}
+
 /* index.html */
 
 @charset "utf-8";
@@ -82,7 +104,7 @@ footer {
 
 .logo
 {
-	color: rgba(167, 202, 70, 0.9);
+	color: rgba(167, 202, 70, 1);
 	font-weight: 100;
 	font-size: 30px;
 	padding: 0px !important;
