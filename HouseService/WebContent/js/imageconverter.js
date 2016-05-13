@@ -23,10 +23,15 @@ $(function() {
     	  cw=canvas.width;
     	  ch=canvas.height;
     	  tempCtx.drawImage(canvas,0,0);
+    	  tempCtx.globalCompositeOperation = "destination-over";
     	  tempCtx.font="20px verdana";
+    	  tempCtx.globalAlpha=0.5;
+    	  tempCtx.fillStyle = '#CACFD2';
+    	  tempCtx.fillRect(0,0,cw+50,ch+50);
+    	  
+          
     	  var textWidth=tempCtx.measureText(text).width;
-    	  tempCtx.globalAlpha=.30;
-    	  tempCtx.fillStyle='black'
+    	  tempCtx.fillStyle='#A7CA46'
     	  tempCtx.fillText(text,cw-textWidth,ch-12);
     	  // just testing by adding tempCanvas to document
     	  //document.body.appendChild(tempCanvas);
