@@ -104,11 +104,8 @@ input.minutes {
 
 .logo
 {
-	color: rgba(167, 202, 70, 1);
-	font-weight: 100;
-	font-size: 30px;
-	padding: 0px !important;
-	line-height: 60px;
+	padding: 15px;
+	height: 60px;
 }
 
 .logo:hover, logo:active
