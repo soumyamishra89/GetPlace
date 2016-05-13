@@ -8,16 +8,16 @@ $(function() {
                 
                 $img = canvas.toDataURL("image/png");
                 $('#contentImg').attr("src", $img);
-                //$('#contentImg').append("<img src="+$img+" class='watermark_text' id='insitemap_img_id'/>");
-                //$('#insitemap_img_id').watermark({
-                $('#contentImg').watermark({
+                $('#contentImg').append("<img src="+$img+" class='watermark_text' id='insitemap_img_id'/>");
+                $('#insitemap_img_id').watermark({
+                //$('#contentImg').watermark({
                 	  text: 'insitemap.net',
                 	  textWidth: 100,
                 	  textColor: 'white'
                 	});
          
                 var a = document.createElement('a');
-                a.href = $('#contentImg').attr('src');
+                a.href = $('#insitemap_img_id').attr('src');
                 a.download = 'insitemap.png';
                 a.click();
             }

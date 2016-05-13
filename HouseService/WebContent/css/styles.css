@@ -49,7 +49,7 @@ footer {
 	width: 200px;
 }
 
-.searchButton2 {
+.searchButton2, .saveButton{
 	background-color: rgba(167, 202, 70, 1);
 }
 
