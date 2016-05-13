@@ -169,9 +169,12 @@
 			</div>
 
 			<button type="button" id="btnSave" class="btn saveButton">Save</button>
-
+<<<<<<< Updated upstream
+			<img id="contentImg" class="watermark_img" style="display:none;"></img>
+=======
 			<img id="contentImg" style="visibility:hidden;"></img>
 
+>>>>>>> Stashed changes
 		</div>
 	</div>
 	<!--/Right Sidebar-->
