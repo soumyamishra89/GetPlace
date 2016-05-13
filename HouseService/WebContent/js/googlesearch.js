@@ -13,7 +13,7 @@ function enabledisableSearch() {
 
 function addSearchBox() {
 	locationsearchBox = document.getElementById('locationSearch');
-	searchBox= new google.maps.places.SearchBox(locationsearchBox);
+	searchBox = new google.maps.places.SearchBox(locationsearchBox);
 	map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationsearchBox);
 
 	// if a search place has been provided then it will be added to search box in this page
@@ -34,8 +34,9 @@ function addSearchBox() {
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
   searchBox.addListener('places_changed', function() {
+	 
 	  var places = searchBox.getPlaces();
-	    if (places.length == 0) {
+	    if (!places || places.length == 0) {
 	      return;
 	    }
 	    
@@ -59,6 +60,7 @@ function addSearchBox() {
     
     places.forEach(function(place) {
     	searchPlaceId = place.place_id;
+    	
     	var request = {
     			  placeId: place.place_id
     			};
@@ -71,7 +73,7 @@ function addSearchBox() {
     			  }
     			}
         // change the location title in the right side bar
-        document.getElementById('locationTitle').innerHTML = place.name;
+        document.getElementById('locationTitle').innerHTML = place.formatted_address;
 
         // open the right side bar
         $(".openSidebar").click();
@@ -109,7 +111,7 @@ function addSearchBox() {
         bounds.extend(place.geometry.location);
       }
     });
-      // after a place is searched the heatmaps are set
+      
     map.setCenter(bounds.getCenter());
     
     showTravelTimeMap();

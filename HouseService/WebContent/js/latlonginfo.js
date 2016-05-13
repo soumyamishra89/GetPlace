@@ -2,7 +2,7 @@
  * 
  */
 var map, loc, radius = 500, overlay, infowindowinitial, layer, projection, searchPlaceId, placeCountMap = new Map(), widget,
-padding = 10, placeTypeClass = 0, travelTimeBound;
+padding = 10, placeTypeClass = 0, travelTimeBound, oldPlace;
 
 //var placesToSearch= ['publicTransport', 'grocery_or_supermarket', 'shopping_mall', 'restaurant', 'hospital', 'park', 'school', 'gym'];
 var request = { radius: radius,
@@ -10,10 +10,16 @@ var request = { radius: radius,
 		  };
 // function called on click of the search button	
 function searchMap(){
-	google.maps.event.trigger(locationsearchBox, 'focus')
-    google.maps.event.trigger(locationsearchBox, 'keydown', {
-        keyCode: 13
-    });
+	if(oldPlace===locationsearchBox.value){
+		google.maps.event.trigger(searchBox, 'places_changed');
+	
+	} else {
+		oldPlace = locationsearchBox.value;
+		google.maps.event.trigger(locationsearchBox, 'focus')
+	    google.maps.event.trigger(locationsearchBox, 'keydown', {
+	        keyCode: 13
+	    });
+	}
 }
 
 var placesToSearch = [];
@@ -26,7 +32,7 @@ function addSearchCriteria() {
 		}
 	}
 	var searchButton = document.getElementById('googlesearchButton');
-    if(placesToSearch.length === 0) {
+    if(locationsearchBox.value === "" || placesToSearch.length===0) {
     	searchButton.disabled = true;
     } else {
     	searchButton.disabled = false;
@@ -147,6 +153,7 @@ function recreateOverlay() {
 	}
 	
 	overlay.onRemove = function() {
+		
 		d3.selectAll("div.stations").remove();
 		layer = null;
 		projection = null;
@@ -171,6 +178,7 @@ function recreateOverlay() {
  * adds icons pertaining to places of interest
  */
 function addPlaceIcons(data, placeType) {
+	
 	if(layer) {
 	    var marker = layer.selectAll("svg."+placeType)
 	        .data(data)
@@ -390,7 +398,7 @@ function extractPlaces(results, status, pagination, placeType) {
 		setLocationDetails(placeType, placeCountMap.get(placeType));
 	}
   	
-    if(pagination.hasNextPage) {
+    if(pagination && pagination.hasNextPage) {
     	pagination.nextPage();
     }
 }
