@@ -6,8 +6,11 @@ $(function() {
                 // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
                 //a.href = canvas.toDataURL("image/png");//canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
                 
-                $img = watermarkedDataURL(canvas, "insitemap.net");//canvas.toDataURL("image/png");
+                 $img = canvas.toDataURL("image/png");
+                //$img = watermarkedDataURL(canvas, "insitemap.net");
+                //Canvas2Image.convertToImage(canvas);
                 $('#contentImg').attr("src", $img);
+                
                 var a = document.createElement('a');
                 a.href = $('#contentImg').attr('src');
                 a.download = 'insitemap.png';

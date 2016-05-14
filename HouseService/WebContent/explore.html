@@ -28,6 +28,7 @@
 	<script type="text/javascript" src="js/googlesearch.js"></script>
 	<script src="js/latlonginfo.js"></script>
 	<script src="js/html2canvas.js"></script>
+	<script src="js/canvas2image.js"></script>
 	<script src="js/imageconverter.js"></script>
 	<script type="text/javascript" src="js/customfunctions.js"></script>
 
@@ -38,6 +39,7 @@
 	<link rel="stylesheet" href="css/styles.css">
 	<link rel="stylesheet" href="css/googlesearch.css">
 	<link rel="stylesheet" href="css/BootSideMenu.css">
+	<link rel="stylesheet" href="css/infoBoxRibbon.css">
 
 	<title>InSiteMap</title>
 
@@ -134,14 +136,14 @@
 	<div id="rightSidebar">
 		<div class="locationContent">
 		<div id="detailedLocationInfo">
-			<div class="row">
+			<!-- div class="row">
 				<div class="col-md-12">
 					<h3 id="locationTitle">Location Information </h3>
 				</div>
-			</div>
+			</div-->
 			<div class="row">
-				<div class="col-md-12">
-					<div id="locationDetail">
+				
+					<!--div id="locationDetail">
 						<div id="nearby_restaurant">
 							<p id="nearby_restaurant_count"></p>
 						</div>
@@ -163,14 +165,44 @@
 						<div id="nearby_gym">
 							<p id="nearby_gym_count"></p>
 						</div>
-					</div>
-				</div>
+					</div-->
+					<div class="infobox-container"> 
+							<!--div class="triangle-l"></div> 
+							<div class="triangle-r"></div--> 
+							<div class="infobox">
+							    <h3 id="locationTitle"><span>Location Information</span></h3>  
+								<p></p>
+								<p style="color:#C4ACAC;">Nearby Places</p>
+							<div id="locationDetail">
+								<div id="nearby_restaurant">
+									<p id="nearby_restaurant_count"></p>
+								</div>
+								<div id="nearby_grocery_or_supermarket">
+									<p id="nearby_grocery_or_supermarket_count"></p>
+								</div>
+								<div id="nearby_shopping_mall">
+									<p id="nearby_shopping_mall_count"></p>
+								</div>
+								<div id="nearby_hospital">
+									<p id="nearby_hospital_count"></p>
+								</div>
+								<div id="nearby_school">
+									<p id="nearby_school_count"></p>
+								</div>
+								<div id="nearby_park">
+									<p id="nearby_park_count"></p>
+								</div>
+								<div id="nearby_gym">
+									<p id="nearby_gym_count"></p>
+								</div>
+							</div>
+						</div> 
+ 					</div>
+					<img id="contentImg"></img>
+				
 			</div>
 			</div>
-
 			<button type="button" id="btnSave" class="btn saveButton">Save As Image</button>
-
-			<img id="contentImg" style="visibility:hidden;"></img>
 
 		</div>
 	</div>
