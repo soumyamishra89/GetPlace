@@ -1,12 +1,12 @@
 $(function() { 
     $("#btnSave").click(function() { 
-        html2canvas($("#detailedLocationInfo"), {
+    	$("#btnSave").hide();
+    	html2canvas($("#locationContent"), {	
             onrendered: function(canvas) {
                 
                 // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
                 //a.href = canvas.toDataURL("image/png");//canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-                
-                 $img = canvas.toDataURL("image/png");
+            	$img = canvas.toDataURL("image/png");
                 //$img = watermarkedDataURL(canvas, "insitemap.net");
                 //Canvas2Image.convertToImage(canvas);
                 $('#contentImg').attr("src", $img);
@@ -15,6 +15,9 @@ $(function() {
                 a.href = $('#contentImg').attr('src');
                 a.download = 'insitemap.png';
                 a.click();
+                
+                $("#btnSave").show();
+               
             }
         });
     });
