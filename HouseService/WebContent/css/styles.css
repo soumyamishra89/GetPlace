@@ -50,6 +50,7 @@ footer {
 }
 
 .searchButton2, .saveButton{
+	color: #fff;
 	background-color: rgba(167, 202, 70, 1);
 }
 
@@ -84,6 +85,12 @@ input.minutes {
 #distLbl {
 	display:inline-block;
 	float:right
+}
+
+.placeIcon {
+	width: 20px;
+	height: 20px;
+	background-color: #fff;
 }
 
 /* index.html */
