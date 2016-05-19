@@ -4,26 +4,28 @@
 	bottom: 0px;
 	left:40%;
 	width:250px;
-	border:1px solid green;
+	border:1px solid rgba(167, 202, 70, 1);
 	padding:0px;
 }
+
 #form p
 {
 	margin:0px;
-	background-color:#0a5500;
-	opacity: 0.4;
+	background-color:rgba(167, 202, 70, 0.8);
     filter: alpha(opacity=40);
 	text-align:center;
-	color:#CED8F6;
+	color:#fff;
 	padding:10px;
 	font-size:20px;
 	font-style:oblique;
 	cursor:pointer;
 }
+
 form
 {
 	display:none;
 }
+
 input[type="text"]
 {
 	width:220px;
@@ -34,6 +36,7 @@ input[type="text"]
 	border-radius:5px;
 	border:2px solid silver;
 }
+
 textarea
 {
 	width:220px;
@@ -45,11 +48,12 @@ textarea
 	border:2px solid silver;
 	font-family:helvetica;
 }
+
 #submit_feedback
 {
 	width:120px;
 	margin-left:65px;
-	background-color:#A4A4A4;
+	background-color:rgba(167, 202, 70, 1);
 	border:none;
 	color:white;
 	height:35px;
