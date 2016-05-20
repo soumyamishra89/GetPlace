@@ -3,6 +3,7 @@
  */
 var map, loc, radius = 500, overlay, infowindowinitial, layer, projection, searchPlaceId, placeCountMap = new Map(), widget,
 padding = 10, placeTypeClass = 0, travelTimeBound, oldPlace;
+var nearbyPlaceholder = "Nearby Places";
 
 //var placesToSearch= ['publicTransport', 'grocery_or_supermarket', 'shopping_mall', 'restaurant', 'hospital', 'park', 'school', 'gym'];
 var request = { radius: radius,
@@ -122,23 +123,35 @@ function showTravelTimeMap(){
 	var originPoint = map.getCenter().lat()+','+ map.getCenter().lng();
 	if(widget){
 		widget.setOrigin(originPoint);
+	} else {
+	    widget = new walkscore.TravelTimeWidget({
+	    	  map    : map,
+	    	  origin : originPoint,
+	    	  show   : true,
+	    	  mode   : walkscore.TravelTime.Mode.WALK,
+	    	  time : 10
+	    	});
+	    //widget.getBounds();
+	    $('#nearbyPlaces').html(nearbyPlaceholder+" by " + widget.getMode() + " within " + widget.getTime() +" mins")
+		
+	    widget.on("time_changed", function(d) {
+	    		travelTimeBound = widget.getBounds();
+	    		radius = distanceBetweenPoints(travelTimeBound.getSouthWest(), travelTimeBound.getNorthEast())*500;// the radius is distance/2 and this method returns distance in Km hence converting to meters.	
+	    		request['radius'] = radius;
+	    		
+	    		$('#nearbyPlaces').html(nearbyPlaceholder+" by " + widget.getMode() + " within " + d['time'] +" mins")
+	    		recreateOverlay();
+	    		
+	    });
+	    
+	    widget.on("mode_changed", function(d) {
+	    	$('#nearbyPlaces').html(nearbyPlaceholder+" by " + d['mode'] + " within " + widget.getTime() +" mins")
+			
+	    	radius = distanceBetweenPoints(travelTimeBound.getSouthWest(), travelTimeBound.getNorthEast())*500;// the radius is distance/2 and this method returns distance in Km hence converting to meters. 		
+			request['radius'] = radius;
+	    	recreateOverlay();
+	    });
 	}
-	
-    widget = new walkscore.TravelTimeWidget({
-    	  map    : map,
-    	  origin : originPoint,
-    	  show   : true,
-    	  mode   : walkscore.TravelTime.Mode.WALK,
-    	  time : 5
-    	});
-    //widget.getBounds();
-    widget.on("time_changed", function() {
-    		travelTimeBound = widget.getBounds();
-    		radius = distanceBetweenPoints(travelTimeBound.getSouthWest(), travelTimeBound.getNorthEast())*500;    		
-    		request['radius'] = radius;
-    		
-    		recreateOverlay();
-    });
   }
 
 /**
