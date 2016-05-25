@@ -47,6 +47,7 @@ function addSearchBox() {
     markers = [];
 
     // Hide all the location details
+    $("#nearby_transport").hide();
     $("#nearby_restaurant").hide();
     $("#nearby_shopping_mall").hide();
     $("#nearby_grocery_or_supermarket").hide();

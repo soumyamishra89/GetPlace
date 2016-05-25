@@ -75,6 +75,14 @@ function loadPlaces() {
 						   		}
 						   		addPlaceIcons(transportData, 'publicTransport');
 						   		placeCountMap.set('publicTransport', transportData.length);
+						   		var count = transportData.length;
+								$('#nearby_transport').show();
+								document.getElementById('nearby_transport_count').innerHTML = count;
+								if (count > 1) {
+									document.getElementById('nearby_transport_count').innerHTML += " Transports";
+								}else{
+									document.getElementById('nearby_transport_count').innerHTML += " Transport"
+								}
 						    }
 					   	}
 					    	

@@ -151,6 +151,16 @@
 							<p></p>
 							<p id="nearbyPlaces" style="color:#C4ACAC;">Nearby Places</p>
 							<div id="locationDetail">
+							<div id="nearby_transport">
+									<div class="row">
+										<div class="col-md-2 col-xs-2 col-lg-2">
+											<img class="placeIcon" src="images/public_transport.png">
+										</div>
+										<div class="col-md-10 col-xs-10 col-lg-10">
+											<p id="nearby_transport_count"></p>
+										</div>
+									</div>
+								</div>
 								<div id="nearby_restaurant">
 									<div class="row">
 										<div class="col-md-2 col-xs-2 col-lg-2">
@@ -266,6 +276,7 @@
 				
 	<script type="text/javascript">
 		$(document).ready(function(){
+			$("#nearby_transport").hide();
 			$("#nearby_restaurant").hide();
 			$("#nearby_shopping_mall").hide();
 			$("#nearby_grocery_or_supermarket").hide();
